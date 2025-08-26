@@ -1,0 +1,35 @@
+# Requirements for Unsupervised Learning Analysis of HR+ Breast Cancer RNA-seq Data
+
+# Core data science libraries
+pandas>=1.5.0
+numpy>=1.23.0
+scipy>=1.9.0
+
+# Configuration and utilities
+PyYAML>=6.0
+pathlib2>=2.3.0
+
+# Single-cell analysis
+scanpy>=1.9.0
+anndata>=0.9.0
+
+# Machine learning
+scikit-learn>=1.1.0
+
+# Visualization
+matplotlib>=3.5.0
+seaborn>=0.12.0
+plotly>=5.10.0
+
+# Bioinformatics
+biopython>=1.81
+
+# File processing
+openpyxl>=3.1.0  # For Excel file reading
+# Removed xlrd as it is deprecated for .xlsx files
+
+# System monitoring (optional)
+psutil>=5.9.0    # For memory monitoring
+
+# TCR analysis (optional)
+# immunarch  # R package, install separately if needed

@@ -1,0 +1,17 @@
+# Ignore all log files
+*.log
+
+# Ignore the entire data directory
+data/
+
+# Ignore the virtual environment folder
+.venv/
+
+# Ignore the processed data directory
+Processed_Data/
+
+# Ignore the article directory
+Article/
+
+# Ignore the MD directory
+MD/
