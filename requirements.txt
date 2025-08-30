@@ -31,5 +31,14 @@ openpyxl>=3.1.0  # For Excel file reading
 # System monitoring (optional)
 psutil>=5.9.0    # For memory monitoring
 
-# TCR analysis (optional)
-# immunarch  # R package, install separately if needed
+# Dimensionality reduction
+umap-learn>=0.5.0
+
+# Clustering (optional)
+hdbscan>=0.8.0
+
+# Gradient boosting
+xgboost>=1.7.0
+
+# Deep learning (optional)
+tensorflow>=2.12.0
