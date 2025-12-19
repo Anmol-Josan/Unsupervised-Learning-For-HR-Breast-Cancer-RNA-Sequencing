@@ -1,4 +1,4 @@
-# unsupervised-learning-for-hr-breast-cancer-rna-sequencing
+# Unsupervised-Learning-for-HR-Breast-Cancer-RNA-Sequencing
 
 How can unsupervised learning techniques, applied to single-cell RNA sequencing data of HR+ breast cancer patients undergoing nab-paclitaxel and pembrolizumab treatment, identify cell clusters predictive of treatment response, and what biomarkers cause these clusters?
 
