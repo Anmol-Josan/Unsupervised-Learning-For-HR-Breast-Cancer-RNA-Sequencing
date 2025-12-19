@@ -15,3 +15,5 @@ Immunotherapy has shown benefits in HR+ breast cancer, however its clinical util
 # Notebook Execution Time
 
 The total wall time for all cells with timing measurements in the main analysis notebook (`hr-cancer.ipynb`) is approximately **4 hours, 50 minutes, and 33 seconds** using the free resources provided by Kaggle without any GPU acceleration. This includes data loading, processing, clustering algorithms, and visualization steps. Individual cell execution times vary significantly, with the unsupervised machine learning analysis cell taking up to 3 hours in recent runs.
+
+Last updated: December 19, 2025
