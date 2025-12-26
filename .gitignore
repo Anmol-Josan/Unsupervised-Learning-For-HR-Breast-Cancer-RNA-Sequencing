@@ -7,9 +7,6 @@ data/
 # Ignore the virtual environment folder
 .venv/
 
-# Ignore the processed data directory
-Processed_Data/
-
 # Ignore the article directory
 Article/
 
@@ -21,3 +18,6 @@ Archive/
 
 # Ignore API keys and credentials
 kaggle.json
+
+# Ignore output directory
+/Output
