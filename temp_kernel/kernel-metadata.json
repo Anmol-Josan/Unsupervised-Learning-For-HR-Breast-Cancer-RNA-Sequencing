@@ -1,0 +1,23 @@
+{
+  "id": "anmoljosan/hr-cancer",
+  "id_no": 94639779,
+  "title": "HR+ Cancer",
+  "code_file": "hr-cancer.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "keywords": [],
+  "dataset_sources": [
+    "anmoljosan/graph-visualization"
+  ],
+  "kernel_sources": [
+    "packagemanager/pm-94639779-at-12-31-2025-17-39-18"
+  ],
+  "competition_sources": [],
+  "model_sources": [],
+  "docker_image": "gcr.io/kaggle-images/python@sha256:bf0b407a5ed73626191ae2259063a0090ae36666c8f00ffdfae3fb543eae750d",
+  "machine_shape": "None"
+}
