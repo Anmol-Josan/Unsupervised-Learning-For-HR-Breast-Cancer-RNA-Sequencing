@@ -15,6 +15,6 @@ Potential applications of this project include:
 
 # Notebook Execution Time
 
-The total wall time for all cells with timing measurements in the main analysis notebook (`Kaggle Run 2.ipynb`) is approximately *8 hours, 27 minutes, and 41 seconds** using the free resources provided by Kaggle without any GPU acceleration. This includes data loading, processing, clustering algorithms, machine learning, and visualization steps.
+The total wall time for all cells with timing measurements in the main analysis notebook (`Kaggle Run 2.ipynb`) is approximately 10 hours, 47 minutes, and 31 seconds** using the free resources provided by Kaggle with 2x T4 GPU acceleration. This includes data loading, processing, clustering algorithms, machine learning, and visualization steps.
 
 Last updated: December 26, 2025
