@@ -21,3 +21,6 @@ kaggle.json
 
 # Ignore output directory
 /Output
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
