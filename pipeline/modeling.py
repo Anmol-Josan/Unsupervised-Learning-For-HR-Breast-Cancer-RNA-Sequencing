@@ -4,6 +4,8 @@ Modeling module for traditional ML and deep learning with LOPO cross-validation.
 
 from pathlib import Path
 from typing import Any, Dict, Iterator, List, Optional, Tuple
+from multiprocessing import Pool, cpu_count
+from functools import partial
 
 import numpy as np
 import pandas as pd
@@ -357,4 +359,242 @@ def train_all_feature_sets(
     print(f"Training complete: {len(combined_results)} total runs")
     print("=" * 60)
 
+    return combined_results
+
+
+# ============================================================================
+# PARALLEL TRAINING FUNCTIONS (Phase 3)
+# ============================================================================
+
+def _process_fold_wrapper(
+    fold_data: Tuple[int, np.ndarray, np.ndarray],
+    X: np.ndarray,
+    y: np.ndarray,
+    groups: np.ndarray,
+    models: Dict[str, Any],
+    param_grids: Dict[str, Dict],
+    feature_set_name: str,
+    use_random_search: bool,
+    n_iter: int
+) -> List[Dict]:
+    """
+    Wrapper function for processing a single LOPO fold in parallel.
+    
+    Args:
+        fold_data: Tuple of (fold_idx, train_idx, test_idx)
+        X: Feature matrix
+        y: Labels
+        groups: Patient groups
+        models: Dictionary of models
+        param_grids: Dictionary of parameter grids
+        feature_set_name: Name of feature set
+        use_random_search: Whether to use RandomizedSearchCV
+        n_iter: Number of iterations for random search
+        
+    Returns:
+        List of result dictionaries
+    """
+    fold_idx, train_idx, test_idx = fold_data
+    
+    X_train, X_test = X[train_idx], X[test_idx]
+    y_train, y_test = y[train_idx], y[test_idx]
+    
+    fold_results = []
+    
+    for model_name, model in models.items():
+        if model_name not in param_grids:
+            continue
+            
+        result = train_single_fold(
+            model,
+            param_grids[model_name],
+            X_train,
+            y_train,
+            X_test,
+            y_test,
+            use_random_search=use_random_search,
+            n_iter=n_iter
+        )
+        
+        fold_results.append({
+            'model': model_name,
+            'feature_set': feature_set_name,
+            'fold': fold_idx,
+            'patient': groups[test_idx[0]],
+            'best_params': str(result['best_params']),
+            'y_test': result['y_test'],
+            'y_pred': result['y_pred'],
+            'y_proba': result['y_proba']
+        })
+    
+    return fold_results
+
+
+def train_traditional_ml_parallel(
+    X: np.ndarray,
+    y: np.ndarray,
+    groups: np.ndarray,
+    feature_set_name: str,
+    models: Optional[Dict[str, Any]] = None,
+    param_grids: Optional[Dict[str, Dict]] = None,
+    use_random_search: bool = True,
+    n_iter: int = 15,
+    n_workers: Optional[int] = None,
+    use_cache: bool = True,
+    cache_manager: Optional[CacheManager] = None
+) -> pd.DataFrame:
+    """
+    Train traditional ML models with LOPO cross-validation using multiprocessing.
+    
+    Args:
+        X: Feature matrix
+        y: Labels
+        groups: Patient groups for LOPO
+        feature_set_name: Name of feature set
+        models: Dictionary of models
+        param_grids: Dictionary of parameter grids
+        use_random_search: Whether to use RandomizedSearchCV
+        n_iter: Number of iterations for random search
+        n_workers: Number of parallel workers (None = auto-detect)
+        use_cache: Whether to use cached results
+        cache_manager: Cache manager instance
+        
+    Returns:
+        DataFrame with results
+    """
+    # Check cache
+    if use_cache and cache_manager:
+        cache_key = cache_manager.generate_cache_key(
+            "train_traditional_ml_parallel",
+            {
+                "feature_set": feature_set_name,
+                "n_samples": X.shape[0],
+                "n_features": X.shape[1],
+                "use_random_search": use_random_search,
+                "n_iter": n_iter,
+                "n_workers": n_workers
+            },
+            data_hash=compute_data_hash(X)
+        )
+        cached_data = cache_manager.load_cache(cache_key, "modeling", format="pt")
+        if cached_data is not None:
+            print(f"Loaded parallel ML results from cache")
+            return cached_data
+    
+    if models is None:
+        models = get_default_models()
+    if param_grids is None:
+        param_grids = get_default_param_grids()
+    
+    # Determine number of workers
+    if n_workers is None:
+        n_workers = max(1, cpu_count() - 1)
+    
+    print(f"Training traditional ML models on {feature_set_name} features (PARALLEL)...")
+    print(f"  Feature shape: {X.shape}")
+    print(f"  Models: {list(models.keys())}")
+    print(f"  Workers: {n_workers}")
+    
+    # Generate LOPO folds
+    logo = LeaveOneGroupOut()
+    folds = [(fold_idx, train_idx, test_idx) 
+             for fold_idx, (train_idx, test_idx) in enumerate(logo.split(X, y, groups))]
+    
+    print(f"  LOPO folds: {len(folds)}")
+    
+    # Create partial function with fixed parameters
+    process_fold_func = partial(
+        _process_fold_wrapper,
+        X=X,
+        y=y,
+        groups=groups,
+        models=models,
+        param_grids=param_grids,
+        feature_set_name=feature_set_name,
+        use_random_search=use_random_search,
+        n_iter=n_iter
+    )
+    
+    # Process folds in parallel
+    with Pool(processes=n_workers) as pool:
+        fold_results_list = pool.map(process_fold_func, folds)
+    
+    # Flatten results
+    all_results = []
+    for fold_results in fold_results_list:
+        all_results.extend(fold_results)
+    
+    results_df = pd.DataFrame(all_results)
+    
+    print(f"  Completed {len(folds)} folds with {len(models)} models = {len(all_results)} runs")
+    
+    # Save to cache
+    if use_cache and cache_manager:
+        cache_manager.save_cache(results_df, cache_key, "modeling", format="pt")
+    
+    return results_df
+
+
+def train_all_feature_sets_parallel(
+    feature_sets: Dict[str, np.ndarray],
+    y: np.ndarray,
+    groups: np.ndarray,
+    models: Optional[Dict[str, Any]] = None,
+    param_grids: Optional[Dict[str, Dict]] = None,
+    use_random_search: bool = True,
+    n_iter: int = 15,
+    n_workers: Optional[int] = None,
+    use_cache: bool = True,
+    cache_manager: Optional[CacheManager] = None
+) -> pd.DataFrame:
+    """
+    Train models on all feature sets using parallel execution.
+    
+    Args:
+        feature_sets: Dictionary of feature sets
+        y: Labels
+        groups: Patient groups
+        models: Dictionary of models
+        param_grids: Dictionary of parameter grids
+        use_random_search: Whether to use RandomizedSearchCV
+        n_iter: Number of iterations
+        n_workers: Number of parallel workers
+        use_cache: Whether to use cached results
+        cache_manager: Cache manager instance
+        
+    Returns:
+        Combined DataFrame with all results
+    """
+    print("=" * 60)
+    print("Training models on all feature sets (PARALLEL)")
+    print("=" * 60)
+    
+    all_results = []
+    
+    for feature_set_name, X in feature_sets.items():
+        print(f"\nFeature set: {feature_set_name}")
+        print("-" * 60)
+        
+        results_df = train_traditional_ml_parallel(
+            X,
+            y,
+            groups,
+            feature_set_name,
+            models=models,
+            param_grids=param_grids,
+            use_random_search=use_random_search,
+            n_iter=n_iter,
+            n_workers=n_workers,
+            use_cache=use_cache,
+            cache_manager=cache_manager
+        )
+        
+        all_results.append(results_df)
+    
+    combined_results = pd.concat(all_results, ignore_index=True)
+    
+    print("=" * 60)
+    print(f"Training complete: {len(combined_results)} total runs (PARALLEL)")
+    print("=" * 60)
+    
     return combined_results
