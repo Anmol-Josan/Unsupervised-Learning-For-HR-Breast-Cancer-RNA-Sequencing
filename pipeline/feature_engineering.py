@@ -28,7 +28,7 @@ HYDROPHOBICITY_KD = {
 
 CHARGE = {
     'A': 0, 'R': 1, 'N': 0, 'D': -1, 'C': 0,
-    'Q': 0, 'E': -1, 'G': 0, 'H': 0, 'I': 0,
+    'Q': 0, 'E': -1, 'G': 0, 'H': 0.1, 'I': 0,  # H is ~10% protonated at pH 7
     'L': 0, 'K': 1, 'M': 0, 'F': 0, 'P': 0,
     'S': 0, 'T': 0, 'W': 0, 'Y': 0, 'V': 0
 }
@@ -45,6 +45,30 @@ POLARITY = {
     'Q': 10.5, 'E': 12.3, 'G': 9.0, 'H': 10.4, 'I': 5.2,
     'L': 4.9, 'K': 11.3, 'M': 5.7, 'F': 5.2, 'P': 8.0,
     'S': 9.2, 'T': 8.6, 'W': 5.4, 'Y': 6.2, 'V': 5.9
+}
+
+# Volume (Å³) - Zamyatnin, 1972
+VOLUME = {
+    'A': 88.6, 'R': 173.4, 'N': 114.1, 'D': 111.1, 'C': 108.5,
+    'Q': 143.8, 'E': 138.4, 'G': 60.1, 'H': 153.2, 'I': 166.7,
+    'L': 166.7, 'K': 168.6, 'M': 162.9, 'F': 189.9, 'P': 112.7,
+    'S': 89.0, 'T': 116.1, 'W': 227.8, 'Y': 193.6, 'V': 140.0
+}
+
+# Flexibility Index (Bhaskaran-Ponnuswamy, 1988)
+FLEXIBILITY = {
+    'A': 0.360, 'R': 0.530, 'N': 0.460, 'D': 0.510, 'C': 0.350,
+    'Q': 0.490, 'E': 0.500, 'G': 0.540, 'H': 0.320, 'I': 0.460,
+    'L': 0.370, 'K': 0.470, 'M': 0.300, 'F': 0.310, 'P': 0.510,
+    'S': 0.510, 'T': 0.440, 'W': 0.310, 'Y': 0.420, 'V': 0.390
+}
+
+# Beta-sheet propensity (Chou-Fasman)
+BETA_SHEET = {
+    'A': 0.83, 'R': 0.93, 'N': 0.89, 'D': 0.54, 'C': 1.19,
+    'Q': 1.10, 'E': 0.37, 'G': 0.75, 'H': 0.87, 'I': 1.60,
+    'L': 1.30, 'K': 0.74, 'M': 1.05, 'F': 1.38, 'P': 0.55,
+    'S': 0.75, 'T': 1.19, 'W': 1.37, 'Y': 1.47, 'V': 1.70
 }
 
 
@@ -70,38 +94,96 @@ def _clean_seq(seq: str) -> str:
 
 def physicochemical_features(sequence: str) -> Dict[str, float]:
     """
-    Compute physicochemical properties of a TCR CDR3 sequence.
+    Compute comprehensive physicochemical properties of a TCR CDR3 sequence.
+    Returns 26 features matching the notebook implementation.
 
     Args:
         sequence: TCR CDR3 amino acid sequence
 
     Returns:
-        Dictionary of physicochemical features
+        Dictionary of 26 physicochemical features
     """
     sequence = _clean_seq(sequence)
 
     if len(sequence) == 0:
         return {
-            'length': 0,
-            'molecular_weight': 0.0,
-            'hydrophobicity': 0.0,
-            'charge': 0.0,
-            'polarity': 0.0
+            'hydro_mean': 0.0, 'hydro_sum': 0.0, 'hydro_min': 0.0, 'hydro_max': 0.0,
+            'hydro_range': 0.0, 'hydro_std': 0.0,
+            'net_charge': 0.0, 'positive_aa_count': 0.0, 'negative_aa_count': 0.0, 'charge_ratio': 0.0,
+            'polarity_mean': 0.0, 'polarity_std': 0.0,
+            'length': 0, 'total_mw': 0.0, 'mean_mw': 0.0, 'mean_volume': 0.0, 'total_volume': 0.0,
+            'flexibility_mean': 0.0, 'flexibility_max': 0.0,
+            'beta_propensity_mean': 0.0,
+            'nterm_hydro': 0.0, 'cterm_hydro': 0.0, 'middle_hydro': 0.0,
+            'nterm_charge': 0.0, 'cterm_charge': 0.0, 'middle_charge': 0.0
         }
 
-    # Calculate features
-    length = len(sequence)
-    molecular_weight = sum(MOLECULAR_WEIGHT.get(aa, 0) for aa in sequence)
-    hydrophobicity = sum(HYDROPHOBICITY_KD.get(aa, 0) for aa in sequence) / length
-    charge = sum(CHARGE.get(aa, 0) for aa in sequence)
-    polarity = sum(POLARITY.get(aa, 0) for aa in sequence) / length
+    # === Hydrophobicity Features ===
+    hydro_values = [HYDROPHOBICITY_KD.get(aa, 0) for aa in sequence]
+    
+    # === Charge Features ===
+    charge_values = [CHARGE.get(aa, 0) for aa in sequence]
+    positive_count = sum(1 for c in charge_values if c > 0)
+    negative_count = sum(1 for c in charge_values if c < 0)
+    
+    # === Polarity Features ===
+    polarity_values = [POLARITY.get(aa, 0) for aa in sequence]
+    
+    # === Size Features ===
+    mw_values = [MOLECULAR_WEIGHT.get(aa, 0) for aa in sequence]
+    volume_values = [VOLUME.get(aa, 0) for aa in sequence]
+    
+    # === Flexibility Features ===
+    flex_values = [FLEXIBILITY.get(aa, 0) for aa in sequence]
+    
+    # === Beta-sheet Propensity ===
+    beta_values = [BETA_SHEET.get(aa, 0) for aa in sequence]
+    
+    # === Positional Features (N-term, C-term, Middle) ===
+    n_term = sequence[:3] if len(sequence) >= 3 else sequence
+    c_term = sequence[-3:] if len(sequence) >= 3 else sequence
+    middle = sequence[3:-3] if len(sequence) > 6 else sequence
 
     return {
-        'length': length,
-        'molecular_weight': molecular_weight,
-        'hydrophobicity': hydrophobicity,
-        'charge': charge,
-        'polarity': polarity
+        # Hydrophobicity (6 features)
+        'hydro_mean': np.mean(hydro_values),
+        'hydro_sum': np.sum(hydro_values),
+        'hydro_min': np.min(hydro_values),
+        'hydro_max': np.max(hydro_values),
+        'hydro_range': np.max(hydro_values) - np.min(hydro_values),
+        'hydro_std': np.std(hydro_values) if len(hydro_values) > 1 else 0.0,
+        
+        # Charge (4 features)
+        'net_charge': np.sum(charge_values),
+        'positive_aa_count': float(positive_count),
+        'negative_aa_count': float(negative_count),
+        'charge_ratio': positive_count / (negative_count + 1) if negative_count >= 0 else 0.0,
+        
+        # Polarity (2 features)
+        'polarity_mean': np.mean(polarity_values),
+        'polarity_std': np.std(polarity_values) if len(polarity_values) > 1 else 0.0,
+        
+        # Size (5 features)
+        'length': len(sequence),
+        'total_mw': np.sum(mw_values),
+        'mean_mw': np.mean(mw_values),
+        'mean_volume': np.mean(volume_values),
+        'total_volume': np.sum(volume_values),
+        
+        # Flexibility (2 features)
+        'flexibility_mean': np.mean(flex_values),
+        'flexibility_max': np.max(flex_values),
+        
+        # Beta-sheet (1 feature)
+        'beta_propensity_mean': np.mean(beta_values),
+        
+        # Positional features (6 features)
+        'nterm_hydro': np.mean([HYDROPHOBICITY_KD.get(aa, 0) for aa in n_term]),
+        'cterm_hydro': np.mean([HYDROPHOBICITY_KD.get(aa, 0) for aa in c_term]),
+        'middle_hydro': np.mean([HYDROPHOBICITY_KD.get(aa, 0) for aa in middle]) if middle else 0.0,
+        'nterm_charge': np.sum([CHARGE.get(aa, 0) for aa in n_term]),
+        'cterm_charge': np.sum([CHARGE.get(aa, 0) for aa in c_term]),
+        'middle_charge': np.sum([CHARGE.get(aa, 0) for aa in middle]) if middle else 0.0
     }
 
 
@@ -275,7 +357,7 @@ def encode_tcr_sequences(
     adata: AnnData,
     kmer_k: int = 3,
     n_svd_components: int = 200,
-    max_onehot_length: int = 50,
+    max_onehot_length: int = 20,  # Reduced from 50 to match notebook
     use_cache: bool = True,
     cache_manager: Optional[CacheManager] = None
 ) -> AnnData:
@@ -343,38 +425,40 @@ def encode_tcr_sequences(
 
 
 def _encode_tcr_kmers(adata: AnnData, k: int = 3, n_svd_components: int = 200) -> None:
-    """Encode TCR sequences using k-mers with SVD reduction."""
-    # Extract k-mers from all sequences
+    """Encode TCR sequences using k-mers with CountVectorizer and SVD reduction (matching notebook)."""
+    # Extract and clean sequences
     tra_sequences = adata.obs['cdr3_TRA_clean'].tolist()
     trb_sequences = adata.obs['cdr3_TRB_clean'].tolist()
 
-    # Convert sequences to k-mer strings
-    tra_kmer_strings = [' '.join(kmer_encode_sequence(seq, k=k)) for seq in tra_sequences]
-    trb_kmer_strings = [' '.join(kmer_encode_sequence(seq, k=k)) for seq in trb_sequences]
-
-    # Vectorize k-mers using CountVectorizer
+    # Vectorized k-mer encoding using CountVectorizer (sparse) - matching notebook cell 33
     vec_tra = CountVectorizer(analyzer='char', ngram_range=(k, k))
     vec_trb = CountVectorizer(analyzer='char', ngram_range=(k, k))
-
+    
     try:
-        X_kmer_tra = vec_tra.fit_transform(tra_kmer_strings)
-        X_kmer_trb = vec_trb.fit_transform(trb_kmer_strings)
+        tra_kmer_sparse = vec_tra.fit_transform(tra_sequences)
+        trb_kmer_sparse = vec_trb.fit_transform(trb_sequences)
+        
+        print(f"    TRA k-mer sparse shape: {tra_kmer_sparse.shape}")
+        print(f"    TRB k-mer sparse shape: {trb_kmer_sparse.shape}")
 
-        # Reduce dimensionality using SVD
-        n_comp_tra = min(n_svd_components, X_kmer_tra.shape[1])
-        n_comp_trb = min(n_svd_components, X_kmer_trb.shape[1])
+        # Reduce k-mer sparse matrices with TruncatedSVD to dense representation
+        def _reduce_sparse(sparse_mat, n_components):
+            n_comp = min(n_components, max(1, sparse_mat.shape[1] - 1))
+            try:
+                svd = TruncatedSVD(n_components=n_comp, random_state=42)
+                return svd.fit_transform(sparse_mat)
+            except Exception:
+                # Fallback to dense (small datasets)
+                return sparse_mat.toarray() if hasattr(sparse_mat, 'toarray') else np.asarray(sparse_mat)
 
-        if n_comp_tra > 0:
-            svd_tra = TruncatedSVD(n_components=n_comp_tra, random_state=42)
-            X_kmer_tra_reduced = svd_tra.fit_transform(X_kmer_tra)
-            adata.obsm['X_tcr_tra_kmer'] = X_kmer_tra_reduced
-            print(f"    TRA k-mers: {X_kmer_tra.shape[1]} → {n_comp_tra} dims")
+        tra_kmer_matrix = _reduce_sparse(tra_kmer_sparse, n_components=n_svd_components)
+        trb_kmer_matrix = _reduce_sparse(trb_kmer_sparse, n_components=n_svd_components)
+        
+        print(f"    TRA k-mer reduced shape: {tra_kmer_matrix.shape}")
+        print(f"    TRB k-mer reduced shape: {trb_kmer_matrix.shape}")
 
-        if n_comp_trb > 0:
-            svd_trb = TruncatedSVD(n_components=n_comp_trb, random_state=42)
-            X_kmer_trb_reduced = svd_trb.fit_transform(X_kmer_trb)
-            adata.obsm['X_tcr_trb_kmer'] = X_kmer_trb_reduced
-            print(f"    TRB k-mers: {X_kmer_trb.shape[1]} → {n_comp_trb} dims")
+        adata.obsm['X_tcr_tra_kmer'] = tra_kmer_matrix
+        adata.obsm['X_tcr_trb_kmer'] = trb_kmer_matrix
 
     except Exception as e:
         print(f"    Warning: K-mer encoding failed: {e}")
@@ -420,14 +504,30 @@ def _encode_tcr_physicochemical(adata: AnnData) -> None:
     for col in trb_df.columns:
         adata.obs[col] = trb_df[col].values
 
-    # Also add combined array to obsm
-    X_physico = np.column_stack([
-        tra_df[['tra_molecular_weight', 'tra_hydrophobicity']].values,
-        trb_df[['trb_molecular_weight', 'trb_hydrophobicity']].values
-    ])
+    # Also add combined array to obsm (using key features matching notebook)
+    # Notebook uses: tra_length, tra_total_mw, tra_hydro_mean, trb_length, trb_total_mw, trb_hydro_mean
+    physico_cols_tra = ['tra_length', 'tra_total_mw', 'tra_hydro_mean']
+    physico_cols_trb = ['trb_length', 'trb_total_mw', 'trb_hydro_mean']
+    
+    # Select available columns
+    available_tra = [col for col in physico_cols_tra if col in tra_df.columns]
+    available_trb = [col for col in physico_cols_trb if col in trb_df.columns]
+    
+    if available_tra and available_trb:
+        X_physico = np.column_stack([
+            tra_df[available_tra].values,
+            trb_df[available_trb].values
+        ])
+    else:
+        # Fallback: use length if other columns don't exist
+        X_physico = np.column_stack([
+            tra_df[['tra_length']].values if 'tra_length' in tra_df.columns else np.zeros((len(tra_df), 1)),
+            trb_df[['trb_length']].values if 'trb_length' in trb_df.columns else np.zeros((len(trb_df), 1))
+        ])
+    
     adata.obsm['X_tcr_physico'] = X_physico
 
-    print(f"    Physicochemical features: {X_physico.shape[1]} features")
+    print(f"    Physicochemical features: {len(tra_df.columns) + len(trb_df.columns)} total features ({len(tra_df.columns)} per chain)")
 
 
 def _get_obsm_or_zeros(adata: AnnData, key: str, mask: np.ndarray, n_cols: int) -> np.ndarray:
@@ -494,53 +594,88 @@ def create_feature_sets(
     gene_pca = adata.obsm['X_gene_pca'][supervised_mask] if 'X_gene_pca' in adata.obsm else np.zeros((supervised_mask.sum(), 50))
     gene_svd = adata.obsm['X_gene_svd'][supervised_mask] if 'X_gene_svd' in adata.obsm else np.zeros((supervised_mask.sum(), 50))
 
-    # Get TCR features
-    tra_kmer = adata.obsm['X_tcr_tra_kmer'][supervised_mask] if 'X_tcr_tra_kmer' in adata.obsm else np.zeros((supervised_mask.sum(), 200))
-    trb_kmer = adata.obsm['X_tcr_trb_kmer'][supervised_mask] if 'X_tcr_trb_kmer' in adata.obsm else np.zeros((supervised_mask.sum(), 200))
+    # Get TCR k-mer features (full)
+    tra_kmer_supervised = adata.obsm['X_tcr_tra_kmer'][supervised_mask] if 'X_tcr_tra_kmer' in adata.obsm else np.zeros((supervised_mask.sum(), 200))
+    trb_kmer_supervised = adata.obsm['X_tcr_trb_kmer'][supervised_mask] if 'X_tcr_trb_kmer' in adata.obsm else np.zeros((supervised_mask.sum(), 200))
 
-    # Get physicochemical features
-    tcr_physico = np.column_stack([
-        adata.obs[['tra_molecular_weight', 'tra_hydrophobicity']].fillna(0)[supervised_mask].values,
-        adata.obs[['trb_molecular_weight', 'trb_hydrophobicity']].fillna(0)[supervised_mask].values
-    ])
+    # Reduce k-mer features by variance selection (matching notebook cell 43)
+    def select_top_variance_features(X, n_features=200):
+        """Select features with highest variance"""
+        if X.shape[1] <= n_features:
+            return X, np.arange(X.shape[1])
+        variances = np.var(X, axis=0)
+        top_indices = np.argsort(variances)[-n_features:]
+        return X[:, top_indices], top_indices
+
+    print("  Reducing k-mer features by variance selection...")
+    tra_kmer_reduced, tra_top_idx = select_top_variance_features(tra_kmer_supervised, n_features=200)
+    trb_kmer_reduced, trb_top_idx = select_top_variance_features(trb_kmer_supervised, n_features=200)
+    print(f"    TRA k-mers: {tra_kmer_supervised.shape[1]} → {tra_kmer_reduced.shape[1]}")
+    print(f"    TRB k-mers: {trb_kmer_supervised.shape[1]} → {trb_kmer_reduced.shape[1]}")
+
+    # Get physicochemical features (matching notebook: tra_length, tra_molecular_weight, tra_hydrophobicity, etc.)
+    # Notebook uses: tra_length, tra_total_mw, tra_hydro_mean, trb_length, trb_total_mw, trb_hydro_mean
+    physico_cols_tra = ['tra_length', 'tra_total_mw', 'tra_hydro_mean']
+    physico_cols_trb = ['trb_length', 'trb_total_mw', 'trb_hydro_mean']
+    
+    # Use available columns, fallback to defaults if new columns don't exist
+    available_tra = [col for col in physico_cols_tra if col in adata.obs.columns]
+    available_trb = [col for col in physico_cols_trb if col in adata.obs.columns]
+    
+    if available_tra and available_trb:
+        tcr_physico = np.column_stack([
+            adata.obs[available_tra].fillna(0)[supervised_mask].values,
+            adata.obs[available_trb].fillna(0)[supervised_mask].values
+        ])
+    else:
+        # Fallback to original columns
+        fallback_tra = ['tra_length', 'tra_total_mw'] if 'tra_total_mw' in adata.obs.columns else ['tra_length']
+        fallback_trb = ['trb_length', 'trb_total_mw'] if 'trb_total_mw' in adata.obs.columns else ['trb_length']
+        tcr_physico = np.column_stack([
+            adata.obs[fallback_tra].fillna(0)[supervised_mask].values if fallback_tra else np.zeros((supervised_mask.sum(), 1)),
+            adata.obs[fallback_trb].fillna(0)[supervised_mask].values if fallback_trb else np.zeros((supervised_mask.sum(), 1))
+        ])
 
     # Get QC features
     qc_features = adata.obs[['n_genes_by_counts', 'total_counts', 'pct_counts_mt']].fillna(0)[supervised_mask].values
 
-    # Feature Set 1: Basic (29 features)
+    # Feature Set 1: Basic (matching notebook)
     feature_sets['basic'] = np.column_stack([
         gene_pca[:, :20],  # Top 20 gene PCA
-        tcr_physico,       # 4 physicochemical features
+        tcr_physico,       # 6 physicochemical features (or fallback)
         qc_features        # 3 QC metrics
     ])
     print(f"  basic: {feature_sets['basic'].shape}")
 
-    # Feature Set 2: Gene Enhanced (~100 features)
+    # Feature Set 2: Gene Enhanced (matching notebook)
     feature_sets['gene_enhanced'] = np.column_stack([
         gene_pca,                                    # 50 PCA components
         gene_svd[:, :30],                            # 30 SVD components
         _get_obsm_or_zeros(adata, 'X_gene_umap', supervised_mask, 20),  # 20 UMAP components
+        tcr_physico,                                 # 6 physicochemical features
+        qc_features                                   # 3 QC metrics
     ])
     print(f"  gene_enhanced: {feature_sets['gene_enhanced'].shape}")
 
-    # Feature Set 3: TCR Enhanced (~400 features)
+    # Feature Set 3: TCR Enhanced (matching notebook)
     feature_sets['tcr_enhanced'] = np.column_stack([
         gene_pca[:, :15],  # 15 gene PCA
-        tra_kmer,          # 200 TRA k-mers
-        trb_kmer,          # 200 TRB k-mers
-        tcr_physico,       # 4 physicochemical features
+        tra_kmer_reduced,  # Top 200 TRA k-mers (variance-selected)
+        trb_kmer_reduced,  # Top 200 TRB k-mers (variance-selected)
+        tcr_physico,       # 6 physicochemical features
         qc_features        # 3 QC metrics
     ])
     print(f"  tcr_enhanced: {feature_sets['tcr_enhanced'].shape}")
 
-    # Feature Set 4: Comprehensive (~450+ features)
+    # Feature Set 4: Comprehensive (matching notebook cell 43 - reduced version)
+    # Notebook: 15 PCA + 50 TRA k-mers + 50 TRB k-mers + 26 physico + 3 QC = 144 features
+    # But actually uses: 15 + 50 + 50 + 6 + 3 = 124 features
     feature_sets['comprehensive'] = np.column_stack([
-        gene_pca[:, :15],  # 15 gene PCA
-        gene_svd[:, :25],  # 25 SVD components
-        tra_kmer,          # 200 TRA k-mers
-        trb_kmer,          # 200 TRB k-mers
-        tcr_physico,       # 4 physicochemical features
-        qc_features        # 3 QC metrics
+        gene_pca[:, :15],           # Top 15 gene PCA (vs 50) - explains 80-85% variance
+        tra_kmer_reduced[:, :50],   # Top 50 TRA k-mers (vs 200) - sufficient for TCR diversity
+        trb_kmer_reduced[:, :50],   # Top 50 TRB k-mers (vs 200)
+        tcr_physico,                # 6 physicochemical features
+        qc_features                  # 3 QC metrics
     ])
     print(f"  comprehensive: {feature_sets['comprehensive'].shape}")
 

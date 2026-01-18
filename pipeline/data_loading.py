@@ -344,25 +344,53 @@ def merge_gex_tcr(
 
     print("Merging GEX and TCR data...")
 
-    # Filter for productive TCR chains
-    tcr_productive = tcr_df[tcr_df['productive'] == 'True'].copy()
+    # Filter for high-confidence, productive TRA/TRB chains (matching notebook)
+    # Handle case where high_confidence column might not exist
+    if 'high_confidence' in tcr_df.columns:
+        tcr_to_agg = tcr_df[
+            (tcr_df['high_confidence'] == True) &
+            (tcr_df['productive'] == 'True') &
+            (tcr_df['chain'].isin(['TRA', 'TRB']))
+        ].copy()
+    else:
+        # If high_confidence column doesn't exist, just filter by productive and chain
+        tcr_to_agg = tcr_df[
+            (tcr_df['productive'] == 'True') &
+            (tcr_df['chain'].isin(['TRA', 'TRB']))
+        ].copy()
 
-    # Get one CDR3 sequence per cell per chain (TRA and TRB)
-    tcr_tra = tcr_productive[tcr_productive['chain'] == 'TRA'].groupby(['barcode', 'sample_id']).first().reset_index()
-    tcr_trb = tcr_productive[tcr_productive['chain'] == 'TRB'].groupby(['barcode', 'sample_id']).first().reset_index()
+    # Pivot the data to create one row per barcode with TRA and TRB columns
+    # This ensures each cell (barcode) has its TRA and TRB info in separate columns
+    tcr_aggregated = tcr_to_agg.pivot_table(
+        index=['sample_id', 'barcode'],
+        columns='chain',
+        values=['v_gene', 'j_gene', 'cdr3'],
+        aggfunc='first'  # 'first' is safe as we expect at most one productive TRA/TRB per cell
+    )
 
-    # Create cell identifiers (barcode + sample_id)
+    # Flatten the multi-level column index (e.g., from ('v_gene', 'TRA') to 'v_gene_TRA')
+    tcr_aggregated.columns = ['_'.join(col).strip() for col in tcr_aggregated.columns.values]
+    tcr_aggregated.reset_index(inplace=True)
+
+    # Prepare adata.obs for the merge by creating a matching barcode column
+    # The index in adata.obs is like 'AGCCATGCAGCTGTTA-1-0' (barcode-batch_id)
+    # The barcode in TCR data is like 'AGCCATGCAGCTGTTA-1'
     adata.obs['barcode'] = adata.obs.index
+    adata.obs['barcode_for_merge'] = adata.obs.index.str.rsplit('-', n=1).str[0]
 
-    # Merge TRA data
-    tra_merge = tcr_tra[['barcode', 'sample_id', 'cdr3', 'v_gene', 'd_gene', 'j_gene']]
-    tra_merge.columns = ['barcode', 'sample_id', 'cdr3_TRA', 'v_gene_TRA', 'd_gene_TRA', 'j_gene_TRA']
-    adata.obs = adata.obs.merge(tra_merge, on=['barcode', 'sample_id'], how='left')
-
-    # Merge TRB data
-    trb_merge = tcr_trb[['barcode', 'sample_id', 'cdr3', 'v_gene', 'd_gene', 'j_gene']]
-    trb_merge.columns = ['barcode', 'sample_id', 'cdr3_TRB', 'v_gene_TRB', 'd_gene_TRB', 'j_gene_TRB']
-    adata.obs = adata.obs.merge(trb_merge, on=['barcode', 'sample_id'], how='left')
+    # Perform a left merge. This keeps all cells from adata and adds TCR info where available
+    # The number of rows will not change because tcr_aggregated has unique barcodes
+    original_obs = adata.obs.copy()
+    merged_obs = original_obs.merge(
+        tcr_aggregated,
+        left_on=['sample_id', 'barcode_for_merge'],
+        right_on=['sample_id', 'barcode'],
+        how='left'
+    )
+    
+    # Restore the original index to the merged dataframe
+    merged_obs.index = original_obs.index
+    adata.obs = merged_obs
 
     # Add TCR length information
     adata.obs['tra_length'] = adata.obs['cdr3_TRA'].fillna('').str.len()

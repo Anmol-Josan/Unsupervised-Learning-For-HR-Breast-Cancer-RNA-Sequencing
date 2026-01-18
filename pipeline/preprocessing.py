@@ -264,6 +264,7 @@ def preprocess_pipeline(
     n_top_genes: int = 2000,
     hvg_flavor: str = 'seurat',
     scale_max_value: float = 10.0,
+    filter_tcr_cells: bool = True,
     use_cache: bool = True,
     cache_manager: Optional[CacheManager] = None
 ) -> AnnData:
@@ -316,6 +317,12 @@ def preprocess_pipeline(
     # Filter cells and genes
     adata = filter_cells(adata, min_genes=min_genes, min_counts=min_counts, max_pct_mt=max_pct_mt)
     adata = filter_genes(adata, min_cells=min_cells)
+
+    # Filter for cells with high-confidence TCR data (matching notebook)
+    if filter_tcr_cells and 'v_gene_TRA' in adata.obs.columns:
+        initial_cells = adata.n_obs
+        adata = adata[~adata.obs['v_gene_TRA'].isna()].copy()
+        print(f"Filtered from {initial_cells} to {adata.n_obs} cells based on having high-confidence TCR data.")
 
     # Normalize
     adata = normalize_data(adata, target_sum=target_sum, use_cache=False, cache_manager=None)

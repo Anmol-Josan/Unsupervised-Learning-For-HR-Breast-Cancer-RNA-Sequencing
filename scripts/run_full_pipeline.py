@@ -181,6 +181,7 @@ def main():
             n_top_genes=config.get('pipeline.steps.preprocessing.n_top_genes', 2000),
             hvg_flavor=config.get('pipeline.steps.preprocessing.hvg_flavor', 'seurat'),
             scale_max_value=config.get('pipeline.steps.preprocessing.scale_max_value', 10.0),
+            filter_tcr_cells=config.get('pipeline.steps.preprocessing.filter_tcr_cells', True),
             use_cache=use_cache,
             cache_manager=cache_manager
         )
@@ -255,8 +256,9 @@ def main():
             adata,
             n_neighbors=config.get('pipeline.steps.clustering.n_neighbors', 15),
             n_pcs=config.get('pipeline.steps.clustering.n_pcs', 50),
-            leiden_resolutions=config.get('pipeline.steps.clustering.leiden_resolutions', [0.1, 0.2, 0.5, 1.0]),
-            kmeans_n_clusters=config.get('pipeline.steps.clustering.kmeans_n_clusters', 5),
+            leiden_resolutions=config.get('pipeline.steps.clustering.leiden_resolutions', [0.005, 0.0075, 0.01, 0.015, 0.02, 0.03, 0.04, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25, 0.275, 0.3, 0.35, 0.4, 0.5, 0.6, 0.8, 1.0, 1.2, 1.5]),
+            target_clusters=config.get('pipeline.steps.clustering.target_clusters', 7),
+            kmeans_n_clusters=config.get('pipeline.steps.clustering.kmeans_n_clusters', 6),
             use_cache=use_cache,
             cache_manager=cache_manager
         )

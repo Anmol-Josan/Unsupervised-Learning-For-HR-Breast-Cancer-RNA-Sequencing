@@ -25,6 +25,45 @@ except ImportError:
 from pipeline.utils import CacheManager, compute_data_hash
 
 
+def compute_tcr_shannon_entropy(sequences: np.ndarray) -> float:
+    """
+    Compute Shannon Entropy as a measure of TCR repertoire diversity.
+    
+    Shannon Entropy H = -Σ(p_i * log2(p_i))
+    
+    Higher entropy indicates more diverse repertoire (more uniform clone distribution)
+    Lower entropy indicates clonal expansion (dominated by few clones)
+    
+    Args:
+        sequences: Array of TCR CDR3 sequences
+    
+    Returns:
+        Shannon entropy value (bits)
+    """
+    from collections import Counter
+    from scipy.stats import entropy
+    
+    # Remove NaN and empty sequences
+    sequences = sequences[~pd.isna(sequences)]
+    sequences = sequences[sequences != '']
+    sequences = sequences[sequences != 'nan']
+    
+    if len(sequences) == 0:
+        return 0.0
+    
+    # Count clonotype frequencies
+    clone_counts = Counter(sequences.astype(str))
+    
+    # Compute probabilities
+    counts_array = np.array(list(clone_counts.values()))
+    probabilities = counts_array / counts_array.sum()
+    
+    # Compute Shannon entropy (log base 2)
+    shannon_entropy = entropy(probabilities, base=2)
+    
+    return shannon_entropy
+
+
 def create_supervised_mask(adata: AnnData, response_col: str = 'response') -> np.ndarray:
     """
     Create mask for supervised learning samples (those with response labels).
@@ -79,48 +118,54 @@ def prepare_ml_data(
 
 
 def get_default_param_grids() -> Dict[str, Dict]:
-    """Get default hyperparameter grids for traditional ML models."""
+    """Get default hyperparameter grids for traditional ML models (matching notebook cell 48)."""
     param_grids = {
         'LogisticRegression': {
-            'C': [0.1, 1.0, 10.0],
+            'C': [0.1, 1, 10],  # Reduced from 5 to 3 options
             'penalty': ['l2'],
-            'solver': ['lbfgs'],
+            'solver': ['liblinear'],  # Changed from 'lbfgs' to match notebook
             'max_iter': [1000]
         },
         'DecisionTree': {
-            'max_depth': [5, 10, 15, 20],
-            'min_samples_split': [2, 5, 10],
-            'min_samples_leaf': [1, 2, 4]
+            'max_depth': [5, 10],  # Reduced: removed 20 and None (prone to overfitting)
+            'min_samples_split': [5, 10],  # Removed 2 (too permissive)
+            'min_samples_leaf': [2, 4]  # Removed 1 (too permissive)
         },
         'RandomForest': {
-            'n_estimators': [50, 100, 200],
-            'max_depth': [10, 20, None],
-            'min_samples_split': [2, 5],
-            'min_samples_leaf': [1, 2]
+            'n_estimators': [100],  # Fixed value (vs [50, 100, 200])
+            'max_depth': [10, 20],  # Removed None (unconstrained depth)
+            'min_samples_split': [5, 10]  # Removed 2
         }
     }
 
     if HAS_XGBOOST:
         param_grids['XGBoost'] = {
-            'max_depth': [3, 5, 7],
-            'learning_rate': [0.01, 0.1, 0.3],
-            'n_estimators': [50, 100, 200],
-            'subsample': [0.8, 1.0]
+            'max_depth': [3, 5],  # Reduced from [3, 6, 9]
+            'learning_rate': [0.05, 0.1],  # Reduced from [0.01, 0.1, 0.3]
+            'subsample': [0.8, 1.0],  # Kept same
+            'colsample_bytree': [0.8, 1.0],  # Added to match notebook
+            'n_estimators': [100]  # Fixed (vs [50, 100, 200])
         }
 
     return param_grids
 
 
 def get_default_models() -> Dict[str, Any]:
-    """Get default models."""
+    """Get default models (matching notebook)."""
     models = {
-        'LogisticRegression': LogisticRegression(random_state=42),
+        'LogisticRegression': LogisticRegression(random_state=42, max_iter=1000, solver='liblinear'),  # Changed solver to match notebook
         'DecisionTree': DecisionTreeClassifier(random_state=42),
-        'RandomForest': RandomForestClassifier(random_state=42, n_jobs=1)
+        'RandomForest': RandomForestClassifier(n_estimators=100, random_state=42, n_jobs=1)  # Fixed n_estimators to match notebook
     }
 
     if HAS_XGBOOST:
-        models['XGBoost'] = xgb.XGBClassifier(random_state=42, n_jobs=1, eval_metric='logloss')
+        models['XGBoost'] = xgb.XGBClassifier(
+            random_state=42, 
+            n_jobs=1, 
+            eval_metric='logloss',
+            use_label_encoder=False,
+            n_estimators=100  # Fixed to match notebook
+        )
 
     return models
 
