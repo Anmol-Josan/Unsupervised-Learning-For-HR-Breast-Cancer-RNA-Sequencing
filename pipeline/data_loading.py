@@ -346,16 +346,32 @@ def merge_gex_tcr(
 
     # Filter for high-confidence, productive TRA/TRB chains (matching notebook)
     # Handle case where high_confidence column might not exist
+    # Handle both boolean True and string 'True' for productive column
     if 'high_confidence' in tcr_df.columns:
+        # Handle both boolean and string comparisons
+        productive_mask = (
+            (tcr_df['productive'] == True) | 
+            (tcr_df['productive'] == 'True') |
+            (tcr_df['productive'].astype(str).str.lower() == 'true')
+        )
+        high_conf_mask = (
+            (tcr_df['high_confidence'] == True) |
+            (tcr_df['high_confidence'].astype(str).str.lower() == 'true')
+        )
         tcr_to_agg = tcr_df[
-            (tcr_df['high_confidence'] == True) &
-            (tcr_df['productive'] == 'True') &
+            high_conf_mask &
+            productive_mask &
             (tcr_df['chain'].isin(['TRA', 'TRB']))
         ].copy()
     else:
         # If high_confidence column doesn't exist, just filter by productive and chain
+        productive_mask = (
+            (tcr_df['productive'] == True) | 
+            (tcr_df['productive'] == 'True') |
+            (tcr_df['productive'].astype(str).str.lower() == 'true')
+        )
         tcr_to_agg = tcr_df[
-            (tcr_df['productive'] == 'True') &
+            productive_mask &
             (tcr_df['chain'].isin(['TRA', 'TRB']))
         ].copy()
 

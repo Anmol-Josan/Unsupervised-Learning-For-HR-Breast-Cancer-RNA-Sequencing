@@ -26,6 +26,10 @@ pipeline:
       target_sum: 10000
       n_top_genes: 2000
       hvg_flavor: "seurat"
+      # Optional: use notebook Cell 40 parameters (if set, overrides n_top_genes)
+      hvg_min_mean: null  # Set to 0.0125 to match notebook Cell 40
+      hvg_max_mean: null  # Set to 3.0 to match notebook Cell 40
+      hvg_min_disp: null  # Set to 0.5 to match notebook Cell 40
       scale_max_value: 10.0
       filter_tcr_cells: true  # Filter cells without high-confidence TCR data
 
@@ -41,6 +45,7 @@ pipeline:
         kmer_k: 3
         n_svd_components: 200
         max_onehot_length: 20  # Reduced from 50 to match notebook
+        use_biopython: true  # Use BioPython ProtParam (matching notebook Cell 28), false for 26-feature custom approach
 
     clustering:
       enabled: true

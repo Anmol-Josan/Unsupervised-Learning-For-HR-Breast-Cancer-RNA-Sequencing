@@ -172,6 +172,9 @@ def select_highly_variable_genes(
     adata: AnnData,
     n_top_genes: int = 2000,
     flavor: str = 'seurat',
+    min_mean: Optional[float] = None,
+    max_mean: Optional[float] = None,
+    min_disp: Optional[float] = None,
     use_cache: bool = True,
     cache_manager: Optional[CacheManager] = None
 ) -> AnnData:
@@ -180,8 +183,11 @@ def select_highly_variable_genes(
 
     Args:
         adata: Normalized AnnData object
-        n_top_genes: Number of highly variable genes to select
+        n_top_genes: Number of highly variable genes to select (used if flavor='seurat')
         flavor: Method to use ('seurat', 'cell_ranger', 'seurat_v3')
+        min_mean: Minimum mean expression (matching notebook Cell 40)
+        max_mean: Maximum mean expression (matching notebook Cell 40)
+        min_disp: Minimum dispersion (matching notebook Cell 40)
         use_cache: Whether to use cached data
         cache_manager: Cache manager instance
 
@@ -192,7 +198,14 @@ def select_highly_variable_genes(
     if use_cache and cache_manager:
         cache_key = cache_manager.generate_cache_key(
             "select_hvg",
-            {"n_top_genes": n_top_genes, "flavor": flavor, "shape": adata.shape},
+            {
+                "n_top_genes": n_top_genes, 
+                "flavor": flavor,
+                "min_mean": min_mean,
+                "max_mean": max_mean,
+                "min_disp": min_disp,
+                "shape": adata.shape
+            },
             data_hash=compute_data_hash(adata)
         )
         cached_data = cache_manager.load_cache(cache_key, "preprocessing", format="h5ad")
@@ -200,15 +213,25 @@ def select_highly_variable_genes(
             print(f"Loaded HVG selection from cache")
             return cached_data
 
-    print(f"Selecting {n_top_genes} highly variable genes (flavor={flavor})...")
-
-    # Identify highly variable genes
-    sc.pp.highly_variable_genes(
-        adata,
-        n_top_genes=n_top_genes,
-        flavor=flavor,
-        subset=False  # Don't subset yet, keep all genes
-    )
+    # Use notebook parameters if provided, otherwise use defaults
+    if min_mean is not None or max_mean is not None or min_disp is not None:
+        print(f"Selecting highly variable genes with custom parameters (min_mean={min_mean}, max_mean={max_mean}, min_disp={min_disp})...")
+        sc.pp.highly_variable_genes(
+            adata,
+            min_mean=min_mean if min_mean is not None else 0.0125,
+            max_mean=max_mean if max_mean is not None else 3,
+            min_disp=min_disp if min_disp is not None else 0.5,
+            subset=False  # Don't subset yet, keep all genes
+        )
+    else:
+        print(f"Selecting {n_top_genes} highly variable genes (flavor={flavor})...")
+        # Identify highly variable genes
+        sc.pp.highly_variable_genes(
+            adata,
+            n_top_genes=n_top_genes,
+            flavor=flavor,
+            subset=False  # Don't subset yet, keep all genes
+        )
 
     n_hvg = adata.var['highly_variable'].sum()
     print(f"Selected {n_hvg} highly variable genes")
@@ -263,6 +286,9 @@ def preprocess_pipeline(
     target_sum: float = 1e4,
     n_top_genes: int = 2000,
     hvg_flavor: str = 'seurat',
+    hvg_min_mean: Optional[float] = None,
+    hvg_max_mean: Optional[float] = None,
+    hvg_min_disp: Optional[float] = None,
     scale_max_value: float = 10.0,
     filter_tcr_cells: bool = True,
     use_cache: bool = True,
@@ -280,7 +306,11 @@ def preprocess_pipeline(
         target_sum: Normalization target sum
         n_top_genes: Number of HVGs to select
         hvg_flavor: HVG selection method
+        hvg_min_mean: Minimum mean expression for HVG (matching notebook Cell 40)
+        hvg_max_mean: Maximum mean expression for HVG (matching notebook Cell 40)
+        hvg_min_disp: Minimum dispersion for HVG (matching notebook Cell 40)
         scale_max_value: Maximum value after scaling
+        filter_tcr_cells: Filter cells without high-confidence TCR data
         use_cache: Whether to use cached data
         cache_manager: Cache manager instance
 
@@ -298,7 +328,12 @@ def preprocess_pipeline(
                 "min_cells": min_cells,
                 "target_sum": target_sum,
                 "n_top_genes": n_top_genes,
-                "hvg_flavor": hvg_flavor
+                "hvg_flavor": hvg_flavor,
+                "hvg_min_mean": hvg_min_mean,
+                "hvg_max_mean": hvg_max_mean,
+                "hvg_min_disp": hvg_min_disp,
+                "scale_max_value": scale_max_value,
+                "filter_tcr_cells": filter_tcr_cells
             },
             data_hash=compute_data_hash(adata)
         )
@@ -332,12 +367,15 @@ def preprocess_pipeline(
         adata,
         n_top_genes=n_top_genes,
         flavor=hvg_flavor,
+        min_mean=hvg_min_mean,
+        max_mean=hvg_max_mean,
+        min_disp=hvg_min_disp,
         use_cache=False,
         cache_manager=None
     )
 
-    # Scale (optional - usually done before PCA)
-    # adata = scale_data(adata, max_value=scale_max_value, use_hvg_only=True)
+    # Scale data (matching notebook Cell 40)
+    adata = scale_data(adata, max_value=scale_max_value, use_hvg_only=True)
 
     print("=" * 60)
     print("Preprocessing complete")

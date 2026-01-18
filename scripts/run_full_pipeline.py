@@ -224,7 +224,8 @@ def main():
             adata,
             kmer_k=config.get('pipeline.steps.feature_engineering.tcr_encoding.kmer_k', 3),
             n_svd_components=config.get('pipeline.steps.feature_engineering.tcr_encoding.n_svd_components', 200),
-            max_onehot_length=config.get('pipeline.steps.feature_engineering.tcr_encoding.max_onehot_length', 50),
+            max_onehot_length=config.get('pipeline.steps.feature_engineering.tcr_encoding.max_onehot_length', 20),
+            use_biopython_physico=config.get('pipeline.steps.feature_engineering.tcr_encoding.use_biopython', True),
             use_cache=use_cache,
             cache_manager=cache_manager
         )

@@ -15,6 +15,14 @@ from sklearn.decomposition import PCA, TruncatedSVD
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.preprocessing import StandardScaler
 
+# Try to import BioPython for notebook-compatible physicochemical features
+try:
+    from Bio.Seq import Seq
+    from Bio.SeqUtils import ProtParam
+    HAS_BIOPYTHON = True
+except ImportError:
+    HAS_BIOPYTHON = False
+
 from pipeline.utils import CacheManager, compute_data_hash
 
 
@@ -92,19 +100,54 @@ def _clean_seq(seq: str) -> str:
     return cleaned
 
 
-def physicochemical_features(sequence: str) -> Dict[str, float]:
+def physicochemical_features(sequence: str, use_biopython: bool = True) -> Dict[str, float]:
     """
-    Compute comprehensive physicochemical properties of a TCR CDR3 sequence.
-    Returns 26 features matching the notebook implementation.
+    Compute physicochemical properties of a TCR CDR3 sequence.
+    
+    If use_biopython=True and BioPython is available, returns 6 features matching notebook Cell 28:
+    (length, molecular_weight, aromaticity, instability_index, isoelectric_point, hydrophobicity)
+    
+    If use_biopython=False or BioPython unavailable, returns 26 comprehensive features using custom property tables.
 
     Args:
         sequence: TCR CDR3 amino acid sequence
+        use_biopython: Whether to use BioPython ProtParam (notebook-compatible, 6 features) 
+                      or custom implementation (26 features)
 
     Returns:
-        Dictionary of 26 physicochemical features
+        Dictionary of physicochemical features
     """
     sequence = _clean_seq(sequence)
 
+    # Use BioPython approach (matching notebook Cell 28) if requested and available
+    if use_biopython and HAS_BIOPYTHON:
+        if len(sequence) == 0:
+            return {
+                'length': 0,
+                'molecular_weight': 0.0,
+                'aromaticity': 0.0,
+                'instability_index': 0.0,
+                'isoelectric_point': 0.0,
+                'hydrophobicity': 0.0
+            }
+        
+        try:
+            bio_seq = Seq(sequence)
+            analyzer = ProtParam.ProteinAnalysis(str(bio_seq))
+            
+            return {
+                'length': len(sequence),
+                'molecular_weight': analyzer.molecular_weight(),
+                'aromaticity': analyzer.aromaticity(),
+                'instability_index': analyzer.instability_index(),
+                'isoelectric_point': analyzer.isoelectric_point(),
+                'hydrophobicity': analyzer.gravy()  # GRAVY = Grand Average of HydropathY
+            }
+        except Exception:
+            # Fallback to custom implementation if BioPython fails
+            pass
+    
+    # Custom comprehensive implementation (26 features) - matching notebook Cell 56 Task 2
     if len(sequence) == 0:
         return {
             'hydro_mean': 0.0, 'hydro_sum': 0.0, 'hydro_min': 0.0, 'hydro_max': 0.0,
@@ -369,6 +412,8 @@ def encode_tcr_sequences(
         kmer_k: K-mer length
         n_svd_components: Number of SVD components for k-mer reduction
         max_onehot_length: Maximum sequence length for one-hot encoding
+        use_biopython_physico: Use BioPython ProtParam (matching notebook Cell 28, 6 features)
+                              or custom implementation (26 features)
         use_cache: Whether to use cached data
         cache_manager: Cache manager instance
 
@@ -383,6 +428,7 @@ def encode_tcr_sequences(
                 "kmer_k": kmer_k,
                 "n_svd": n_svd_components,
                 "max_onehot_length": max_onehot_length,
+                "use_biopython": use_biopython_physico,
                 "shape": adata.shape
             },
             data_hash=compute_data_hash(adata)
@@ -412,8 +458,8 @@ def encode_tcr_sequences(
     _encode_tcr_onehot(adata, max_length=max_onehot_length)
 
     # Physicochemical features
-    print(f"  Physicochemical features...")
-    _encode_tcr_physicochemical(adata)
+    print(f"  Physicochemical features (use_biopython={use_biopython_physico})...")
+    _encode_tcr_physicochemical(adata, use_biopython=use_biopython_physico)
 
     print("TCR encoding complete")
 
@@ -482,18 +528,18 @@ def _encode_tcr_onehot(adata: AnnData, max_length: int = 50) -> None:
     print(f"    One-hot shapes: TRA {X_onehot_tra.shape}, TRB {X_onehot_trb.shape}")
 
 
-def _encode_tcr_physicochemical(adata: AnnData) -> None:
+def _encode_tcr_physicochemical(adata: AnnData, use_biopython: bool = True) -> None:
     """Compute physicochemical features for TCR sequences."""
     tra_sequences = adata.obs['cdr3_TRA_clean'].tolist()
     trb_sequences = adata.obs['cdr3_TRB_clean'].tolist()
 
     # Compute features for TRA
-    tra_features = [physicochemical_features(seq) for seq in tra_sequences]
+    tra_features = [physicochemical_features(seq, use_biopython=use_biopython) for seq in tra_sequences]
     tra_df = pd.DataFrame(tra_features)
     tra_df.columns = ['tra_' + col for col in tra_df.columns]
 
     # Compute features for TRB
-    trb_features = [physicochemical_features(seq) for seq in trb_sequences]
+    trb_features = [physicochemical_features(seq, use_biopython=use_biopython) for seq in trb_sequences]
     trb_df = pd.DataFrame(trb_features)
     trb_df.columns = ['trb_' + col for col in trb_df.columns]
 
@@ -505,9 +551,16 @@ def _encode_tcr_physicochemical(adata: AnnData) -> None:
         adata.obs[col] = trb_df[col].values
 
     # Also add combined array to obsm (using key features matching notebook)
-    # Notebook uses: tra_length, tra_total_mw, tra_hydro_mean, trb_length, trb_total_mw, trb_hydro_mean
-    physico_cols_tra = ['tra_length', 'tra_total_mw', 'tra_hydro_mean']
-    physico_cols_trb = ['trb_length', 'trb_total_mw', 'trb_hydro_mean']
+    # Notebook Cell 28 (BioPython): uses molecular_weight, hydrophobicity
+    # Notebook Cell 43 (comprehensive): uses tra_length, tra_total_mw, tra_hydro_mean
+    if use_biopython and HAS_BIOPYTHON:
+        # BioPython approach: use molecular_weight and hydrophobicity
+        physico_cols_tra = ['tra_length', 'tra_molecular_weight', 'tra_hydrophobicity']
+        physico_cols_trb = ['trb_length', 'trb_molecular_weight', 'trb_hydrophobicity']
+    else:
+        # Custom approach: use length, total_mw, hydro_mean
+        physico_cols_tra = ['tra_length', 'tra_total_mw', 'tra_hydro_mean']
+        physico_cols_trb = ['trb_length', 'trb_total_mw', 'trb_hydro_mean']
     
     # Select available columns
     available_tra = [col for col in physico_cols_tra if col in tra_df.columns]
@@ -613,10 +666,18 @@ def create_feature_sets(
     print(f"    TRA k-mers: {tra_kmer_supervised.shape[1]} → {tra_kmer_reduced.shape[1]}")
     print(f"    TRB k-mers: {trb_kmer_supervised.shape[1]} → {trb_kmer_reduced.shape[1]}")
 
-    # Get physicochemical features (matching notebook: tra_length, tra_molecular_weight, tra_hydrophobicity, etc.)
-    # Notebook uses: tra_length, tra_total_mw, tra_hydro_mean, trb_length, trb_total_mw, trb_hydro_mean
-    physico_cols_tra = ['tra_length', 'tra_total_mw', 'tra_hydro_mean']
-    physico_cols_trb = ['trb_length', 'trb_total_mw', 'trb_hydro_mean']
+    # Get physicochemical features (matching notebook)
+    # Notebook Cell 28 (BioPython): tra_length, tra_molecular_weight, tra_hydrophobicity
+    # Notebook Cell 43 (comprehensive): tra_length, tra_total_mw, tra_hydro_mean
+    # Check which columns exist and use them
+    if 'tra_molecular_weight' in adata.obs.columns:
+        # BioPython approach
+        physico_cols_tra = ['tra_length', 'tra_molecular_weight', 'tra_hydrophobicity']
+        physico_cols_trb = ['trb_length', 'trb_molecular_weight', 'trb_hydrophobicity']
+    else:
+        # Custom comprehensive approach
+        physico_cols_tra = ['tra_length', 'tra_total_mw', 'tra_hydro_mean']
+        physico_cols_trb = ['trb_length', 'trb_total_mw', 'trb_hydro_mean']
     
     # Use available columns, fallback to defaults if new columns don't exist
     available_tra = [col for col in physico_cols_tra if col in adata.obs.columns]
