@@ -1,0 +1,112 @@
+# Pipeline Configuration File
+
+pipeline:
+  # Data directories
+  data_dir: "./Data"
+  cache_dir: "./cache"
+  output_dir: "./Output"
+
+  # Random seed for reproducibility
+  random_seed: 42
+
+  # Pipeline steps configuration
+  steps:
+    data_loading:
+      enabled: true
+      use_cache: true
+      geo_accession: "GSE300475"
+
+    preprocessing:
+      enabled: true
+      use_cache: true
+      min_genes: 200
+      min_counts: 500
+      max_pct_mt: 20.0
+      min_cells: 3
+      target_sum: 10000
+      n_top_genes: 2000
+      hvg_flavor: "seurat"
+      # Optional: use notebook Cell 40 parameters (if set, overrides n_top_genes)
+      hvg_min_mean: null  # Set to 0.0125 to match notebook Cell 40
+      hvg_max_mean: null  # Set to 3.0 to match notebook Cell 40
+      hvg_min_disp: null  # Set to 0.5 to match notebook Cell 40
+      scale_max_value: 10.0
+      filter_tcr_cells: true  # Filter cells without high-confidence TCR data
+
+    feature_engineering:
+      enabled: true
+      use_cache: true
+      gene_encoding:
+        n_pca_components: 50
+        n_svd_components: 50
+        compute_umap: false  # Expensive, set to true if needed
+        n_umap_components: 20
+      tcr_encoding:
+        kmer_k: 3
+        n_svd_components: 200
+        max_onehot_length: 20  # Reduced from 50 to match notebook
+        use_biopython: true  # Use BioPython ProtParam (matching notebook Cell 28), false for 26-feature custom approach
+
+    clustering:
+      enabled: true
+      use_cache: true
+      n_neighbors: 15
+      n_pcs: 50
+      leiden_resolutions: [0.005, 0.0075, 0.01, 0.015, 0.02, 0.03, 0.04, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25, 0.275, 0.3, 0.35, 0.4, 0.5, 0.6, 0.8, 1.0, 1.2, 1.5]
+      target_clusters: 7
+      kmeans_n_clusters: 6
+
+    modeling:
+      enabled: true
+      use_cache: true
+      response_col: "response"
+      patient_col: "patient_id"
+
+      traditional_ml:
+        enabled: true
+        use_random_search: true
+        n_iter_search: 15
+        models:
+          - LogisticRegression
+          - DecisionTree
+          - RandomForest
+          - XGBoost
+
+      deep_learning:
+        enabled: false  # Can be enabled if needed
+        max_epochs: 20
+        batch_size: 32
+        learning_rate: 0.001
+
+# Caching configuration
+cache:
+  enabled: true
+  base_dir: "./cache"
+  formats:
+    arrays: "pt"      # PyTorch for NumPy arrays
+    adata: "h5ad"     # AnnData native format
+    models: "pt"      # PyTorch for sklearn models
+    results: "pt"     # PyTorch for DataFrames
+  invalidation:
+    check_data_hash: true
+    check_code_version: true
+  compression:
+    enabled: true
+    level: 6
+
+# Parallelization configuration
+parallelization:
+  enabled: true
+  strategy: "auto"  # "auto", "multiprocessing", or "ray"
+  n_workers: 4      # For local multiprocessing
+
+  distributed:
+    enabled: false  # Set to true for multi-VM execution
+    ray_address: null  # Auto-detect if null, or specify "head-node-ip:6379"
+    n_vms: 1        # Number of VM instances available
+
+# Logging
+logging:
+  level: "INFO"
+  log_file: "./logs/pipeline.log"
+  console_output: true
