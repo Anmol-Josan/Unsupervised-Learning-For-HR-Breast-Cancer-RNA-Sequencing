@@ -1,0 +1,483 @@
+0.5s 1 /bin/bash: /kaggle/input/pm-94639779-at-02-07-2026-01-58-46/install_requirements.sh: No such file or directory
+7.5s 2 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+7.5s 3 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+7.5s 4 0.00s - to python to disable frozen modules.
+7.5s 5 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+8.1s 6 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+8.1s 7 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+8.1s 8 0.00s - to python to disable frozen modules.
+8.1s 9 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+9.2s 10 === Initial Memory Check ===
+9.2s 11 Current memory usage: 101.12 MB
+9.2s 12 System memory: 3.7% used (0.72 GB / 31.35 GB)
+9.2s 13 
+9.2s 14 Tip: Run this cell periodically to monitor memory usage
+9.2s 15 ⚡ FAST MODE: Skipping unsupervised learning and traditional ML, going straight to deep learning!
+9.2s 16 - Skip Unsupervised Learning: True
+9.2s 17 - Skip XGBoost/LOPO CV: True
+9.2s 18 - Skip Traditional ML: True
+12.3s 19 [?25l   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/176.6 kB[0m [31m?[0m eta [36m-:--:--[0m[2K   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m176.6/176.6 kB[0m [31m7.3 MB/s[0m eta [36m0:00:00[0m
+12.4s 20 [?25h[?25l   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/2.1 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [91m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[91m╸[0m [32m2.1/2.1 MB[0m [31m100.2 MB/s[0m eta [36m0:00:01[0m[2K   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m2.1/2.1 MB[0m [31m56.3 MB/s[0m eta [36m0:00:00[0m
+12.4s 21 [?25h[?25l   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/58.6 kB[0m [31m?[0m eta [36m-:--:--[0m[2K   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m58.6/58.6 kB[0m [31m2.4 MB/s[0m eta [36m0:00:00[0m
+12.5s 22 [?25h[?25l   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/284.1 kB[0m [31m?[0m eta [36m-:--:--[0m[2K   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m284.1/284.1 kB[0m [31m22.8 MB/s[0m eta [36m0:00:00[0m
+12.6s 23 [?25h[?25l   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/9.2 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [91m━━━━━━━━━━━━━━━━━━━━━━[0m[91m╸[0m[90m━━━━━━━━━━━━━━━━━[0m [32m5.2/9.2 MB[0m [31m159.4 MB/s[0m eta [36m0:00:01[0m[2K   [91m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[91m╸[0m [32m9.2/9.2 MB[0m [31m182.8 MB/s[0m eta [36m0:00:01[0m[2K   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m9.2/9.2 MB[0m [31m99.5 MB/s[0m eta [36m0:00:00[0m
+16.0s 24 [?25hNote: you may need to restart the kernel to use updated packages.
+17.3s 25 [?25l   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/3.2 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [91m━━━━━━━━━━━━━━━━━━━━[0m[91m╸[0m[90m━━━━━━━━━━━━━━━━━━━[0m [32m1.7/3.2 MB[0m [31m50.3 MB/s[0m eta [36m0:00:01[0m[2K   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m3.2/3.2 MB[0m [31m53.2 MB/s[0m eta [36m0:00:00[0m
+20.6s 26 [?25hNote: you may need to restart the kernel to use updated packages.
+23.8s 27 Note: you may need to restart the kernel to use updated packages.
+27.1s 28 Note: you may need to restart the kernel to use updated packages.
+30.3s 29 Note: you may need to restart the kernel to use updated packages.
+33.7s 30 Note: you may need to restart the kernel to use updated packages.
+36.9s 31 Note: you may need to restart the kernel to use updated packages.
+40.3s 32 Note: you may need to restart the kernel to use updated packages.
+42.5s 33 Running on Kaggle: True
+42.6s 34 Downloads will be saved in: /kaggle/working/Data
+42.6s 35 
+42.7s 36 Attempting to download GSE300475_RAW.tar from https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE300475&format=file...
+63.4s 37 Successfully downloaded GSE300475_RAW.tar to /kaggle/working/Data/GSE300475_RAW.tar
+63.4s 38 Extracting GSE300475_RAW.tar...
+63.4s 39 
+63.4s 40 Files contained in GSE300475_RAW.tar:
+63.4s 41 - GSM9061665_S1_barcodes.tsv.gz
+63.4s 42 - GSM9061665_S1_features.tsv.gz
+63.4s 43 - GSM9061665_S1_matrix.mtx.gz
+63.4s 44 - GSM9061666_S2_barcodes.tsv.gz
+63.4s 45 - GSM9061666_S2_features.tsv.gz
+63.4s 46 - GSM9061666_S2_matrix.mtx.gz
+63.4s 47 - GSM9061667_S3_barcodes.tsv.gz
+63.4s 48 - GSM9061667_S3_features.tsv.gz
+63.4s 49 - GSM9061667_S3_matrix.mtx.gz
+63.4s 50 - GSM9061668_S4_barcodes.tsv.gz
+63.4s 51 - GSM9061668_S4_features.tsv.gz
+63.4s 52 - GSM9061668_S4_matrix.mtx.gz
+63.4s 53 - GSM9061669_S5_barcodes.tsv.gz
+63.4s 54 - GSM9061669_S5_features.tsv.gz
+63.4s 55 - GSM9061669_S5_matrix.mtx.gz
+63.4s 56 - GSM9061670_S6_barcodes.tsv.gz
+63.4s 57 - GSM9061670_S6_features.tsv.gz
+63.4s 58 - GSM9061670_S6_matrix.mtx.gz
+63.4s 59 - GSM9061671_S7_barcodes.tsv.gz
+63.4s 60 - GSM9061671_S7_features.tsv.gz
+63.4s 61 - GSM9061671_S7_matrix.mtx.gz
+63.4s 62 - GSM9061672_S8_barcodes.tsv.gz
+63.4s 63 - GSM9061672_S8_features.tsv.gz
+63.4s 64 - GSM9061672_S8_matrix.mtx.gz
+63.4s 65 - GSM9061673_S9_barcodes.tsv.gz
+63.4s 66 - GSM9061673_S9_features.tsv.gz
+63.4s 67 - GSM9061673_S9_matrix.mtx.gz
+63.4s 68 - GSM9061674_S10_barcodes.tsv.gz
+63.4s 69 - GSM9061674_S10_features.tsv.gz
+63.4s 70 - GSM9061674_S10_matrix.mtx.gz
+63.4s 71 - GSM9061675_S11_barcodes.tsv.gz
+63.4s 72 - GSM9061675_S11_features.tsv.gz
+63.4s 73 - GSM9061675_S11_matrix.mtx.gz
+63.4s 74 - GSM9061687_S1_all_contig_annotations.csv.gz
+63.4s 75 - GSM9061688_S2_all_contig_annotations.csv.gz
+63.4s 76 - GSM9061689_S3_all_contig_annotations.csv.gz
+63.4s 77 - GSM9061690_S4_all_contig_annotations.csv.gz
+63.4s 78 - GSM9061691_S5_all_contig_annotations.csv.gz
+63.4s 79 - GSM9061692_S6_all_contig_annotations.csv.gz
+63.4s 80 - GSM9061693_S7_all_contig_annotations.csv.gz
+63.4s 81 - GSM9061694_S9_all_contig_annotations.csv.gz
+63.4s 82 - GSM9061695_S10_all_contig_annotations.csv.gz
+63.4s 83 - GSM9061696_S11_all_contig_annotations.csv.gz
+64.0s 84 
+64.0s 85 Extracted to: /kaggle/working/Data/GSE300475_RAW
+64.0s 86 --------------------------------------------------
+64.0s 87 
+64.0s 88 Attempting to download GSE300475_feature_ref.xlsx from https://ftp.ncbi.nlm.nih.gov/geo/series/GSE300nnn/GSE300475/suppl/GSE300475%5Ffeature%5Fref.xlsx...
+64.0s 89 Successfully downloaded GSE300475_feature_ref.xlsx to /kaggle/working/Data/GSE300475_feature_ref.xlsx
+64.1s 90 Raw data directory set to: /kaggle/working/Data/GSE300475_RAW
+64.1s 91 Found 43 .gz files. Ready for processing (Decompression skipped).
+64.1s 92 
+64.1s 93 --- Preview of GSM9061667_S3_features.tsv.gz ---
+64.1s 94 ENSG00000243485 MIR1302-2HG  Gene Expression
+64.1s 95 0  ENSG00000237613     FAM138A  Gene Expression
+64.1s 96 1  ENSG00000186092       OR4F5  Gene Expression
+64.1s 97 2  ENSG00000238009  AL627309.1  Gene Expression
+64.1s 98 3  ENSG00000239945  AL627309.3  Gene Expression
+64.1s 99 4  ENSG00000239906  AL627309.2  Gene Expression
+64.1s 100 
+64.1s 101 --- Preview of GSM9061672_S8_features.tsv.gz ---
+64.1s 102 ENSG00000243485 MIR1302-2HG  Gene Expression
+64.1s 103 0  ENSG00000237613     FAM138A  Gene Expression
+64.1s 104 1  ENSG00000186092       OR4F5  Gene Expression
+64.1s 105 2  ENSG00000238009  AL627309.1  Gene Expression
+64.1s 106 3  ENSG00000239945  AL627309.3  Gene Expression
+64.1s 107 4  ENSG00000239906  AL627309.2  Gene Expression
+64.1s 108 
+64.1s 109 --- Preview of GSM9061690_S4_all_contig_annotations.csv.gz ---
+64.1s 110 barcode  is_cell                    contig_id  high_confidence  \
+64.1s 111 0  AAACCTGAGGCTATCT-1     True  AAACCTGAGGCTATCT-1_contig_1             True
+64.1s 112 1  AAACCTGAGGGTCTCC-1     True  AAACCTGAGGGTCTCC-1_contig_1             True
+64.1s 113 2  AAACCTGAGGGTCTCC-1     True  AAACCTGAGGGTCTCC-1_contig_2             True
+64.1s 114 3  AAACCTGAGTTCCACA-1    False  AAACCTGAGTTCCACA-1_contig_1            False
+64.1s 115 4  AAACCTGCAAGCTGGA-1     True  AAACCTGCAAGCTGGA-1_contig_1             True
+64.1s 116 
+64.1s 117 length chain        v_gene d_gene   j_gene c_gene  full_length  productive  \
+64.1s 118 0     682   TRA       TRAV8-3    NaN   TRAJ48   TRAC         True        True
+64.1s 119 1     505   TRB        TRBV28    NaN  TRBJ2-7  TRBC2         True        True
+64.1s 120 2     474   TRA  TRAV38-2/DV8    NaN   TRAJ49   TRAC         True        True
+64.1s 121 3     478   TRA        TRAV17    NaN   TRAJ17   TRAC         True        True
+64.1s 122 4     529   TRB        TRBV13  TRBD1  TRBJ2-7  TRBC2         True        True
+64.1s 123 
+64.1s 124 cdr3                                        cdr3_nt  reads  \
+64.1s 125 0    CAVGVVGNEKLTF        TGTGCTGTGGGTGTTGTTGGAAATGAGAAATTAACCTTT   6016
+64.1s 126 1  CASSGSGRVPYEQYF  TGTGCCAGCAGTGGTAGCGGGAGGGTCCCCTACGAGCAGTACTTC  13792
+64.1s 127 2     CAYRFTGNQFYF           TGTGCTTATAGGTTCACCGGTAACCAGTTCTATTTT  23976
+64.1s 128 3  CATVTIKAAGNKLTF  TGTGCTACGGTTACGATCAAAGCTGCAGGCAACAAGCTAACTTTT   5492
+64.1s 129 4  CASSPFGTGPNEQYF  TGTGCCAGCAGCCCCTTCGGGACAGGGCCTAACGAGCAGTACTTC  20324
+64.1s 130 
+64.1s 131 umis raw_clonotype_id          raw_consensus_id
+64.1s 132 0     2     clonotype862  clonotype862_consensus_1
+64.1s 133 1     6     clonotype157  clonotype157_consensus_1
+64.1s 134 2     5     clonotype157  clonotype157_consensus_2
+64.1s 135 3     1              NaN                       NaN
+64.1s 136 4    10       clonotype3    clonotype3_consensus_2
+67.6s 137 Note: you may need to restart the kernel to use updated packages.
+67.7s 138 
+67.7s 139 Total rows in all contig annotation files: 0
+71.2s 140 Note: you may need to restart the kernel to use updated packages.
+75.7s 141 Scanpy version: 1.12
+75.7s 142 Pandas version: 2.2.2
+75.7s 143 All libraries imported successfully!
+75.7s 144 Skipping explicit decompression to save disk space and IO.
+75.7s 145 Scanpy handles .gz files directly during loading.
+75.7s 146 Found 43 compressed files ready for loading.
+75.7s 147 Example: /kaggle/working/Data/GSE300475_RAW/GSM9061667_S3_features.tsv.gz
+75.8s 148 Data directory set to: /kaggle/working/Data/GSE300475_RAW
+75.8s 149 Metadata table now matches the requested specification:
+75.8s 150 
+75.8s 151 Post-check In_Data column (based on files found in raw_data_dir):
+75.8s 152 CPU times: user 21.9 ms, sys: 882 µs, total: 22.7 ms
+75.8s 153 Wall time: 22.4 ms
+75.9s 154 Starting Map Phase (Processing & Saving Chunks)...
+75.9s 155 Processing 1/11: GSM9061665_S1
+82.0s 156 Saved chunk: 8804 cells. Memory cleared.
+82.0s 157 Processing 2/11: GSM9061666_S2
+87.6s 158 Saved chunk: 9037 cells. Memory cleared.
+87.6s 159 Processing 3/11: GSM9061667_S3
+92.1s 160 Saved chunk: 7343 cells. Memory cleared.
+92.1s 161 Processing 4/11: GSM9061668_S4
+97.7s 162 Saved chunk: 8608 cells. Memory cleared.
+97.7s 163 Processing 5/11: GSM9061669_S5
+100.0s 164 Saved chunk: 2887 cells. Memory cleared.
+100.0s 165 Processing 6/11: GSM9061670_S6
+109.5s 166 Saved chunk: 10353 cells. Memory cleared.
+109.5s 167 Processing 7/11: GSM9061671_S7
+118.0s 168 Saved chunk: 9186 cells. Memory cleared.
+118.0s 169 Processing 8/11: GSM9061672_S8
+129.8s 170 Saved chunk: 12665 cells. Memory cleared.
+129.8s 171 Processing 9/11: GSM9061673_S9
+140.2s 172 Saved chunk: 11216 cells. Memory cleared.
+140.2s 173 Processing 10/11: GSM9061674_S10
+149.9s 174 Saved chunk: 9582 cells. Memory cleared.
+149.9s 175 Processing 11/11: GSM9061675_S11
+159.3s 176 Saved chunk: 9286 cells. Memory cleared.
+159.3s 177 
+159.3s 178 Starting Reduce Phase (Merging 11 chunks)...
+159.3s 179 Using on-disk concatenation (anndata.experimental.concat_on_disk)...
+170.5s 180 Final Merged Data: 98967 cells x 14819 genes
+170.5s 181 Full TCR Data: 162133 rows
+170.6s 182 Temp chunks cleaned up.
+170.6s 183 CPU times: user 1min 41s, sys: 9.04 s, total: 1min 50s
+170.6s 184 Wall time: 1min 34s
+170.6s 185 should_process_raw not set; defaulting to False (loaded_h5ad=False, adata_missing=False)
+170.8s 186 Integrating TCR data into AnnData (TCR contigs: 162133, cells: 98967)...
+171.1s 187 DEBUG: adata.obs sample_id examples: ['GSM9061665', 'GSM9061666', 'GSM9061667']
+171.1s 188 DEBUG: TCR sample_id examples: ['GSM9061665', 'GSM9061666', 'GSM9061667']
+171.4s 189 DEBUG: adata barcode examples: ['AAACCTGAGAAGGGTA-1', 'AAACCTGAGACTGTAA-1', 'AAACCTGAGCAGCGTA-1']
+171.4s 190 DEBUG: TCR barcode examples: ['AAACCTGAGACTGTAA-1', 'AAACCTGAGCGTGAAC-1', 'AAACCTGAGCTACCTA-1']
+171.4s 191 Successfully merged TCR data. Cells with TCR info: 38413 / 98967
+171.9s 192 Filtered from 98967 to 38413 cells based on having high-confidence TCR data.
+171.9s 193 
+171.9s 194 Performing QC filtering (starting with 38413 cells, 14819 genes)...
+173.2s 195 After min_genes filter: 38413 cells
+174.4s 196 After min_cells filter: 14816 genes
+175.0s 197 
+175.0s 198 Post-QC AnnData object:
+175.0s 199 AnnData object with n_obs × n_vars = 38413 × 14816
+175.0s 200 obs: 'sample_id', 'patient_id', 'timepoint', 'response', 'n_genes', 'batch', 'barcode_for_merge', 'barcode', 'cdr3_TRA', 'cdr3_TRB', 'j_gene_TRA', 'j_gene_TRB', 'v_gene_TRA', 'v_gene_TRB', 'n_genes_by_counts', 'total_counts', 'total_counts_mt', 'pct_counts_mt'
+175.0s 201 var: 'gene_ids', 'feature_types', 'n_cells', 'mt', 'n_cells_by_counts', 'mean_counts', 'pct_dropout_by_counts', 'total_counts'
+175.0s 202 
+175.0s 203 Sample metadata preview:
+175.0s 204 CPU times: user 3.41 s, sys: 898 ms, total: 4.3 s
+175.0s 205 Wall time: 4.31 s
+175.1s 206 Proceeding with TCR integration...
+175.1s 207 === Dataset Statistics ===
+175.1s 208 Total cells: 38413
+175.1s 209 Total genes: 14816
+175.1s 210 
+175.1s 211 Samples: 10
+175.1s 212 sample_id
+175.1s 213 GSM9061670    5310
+175.1s 214 GSM9061674    5070
+175.1s 215 GSM9061673    5045
+175.1s 216 GSM9061671    4838
+175.1s 217 GSM9061665    4008
+175.1s 218 GSM9061666    3855
+175.1s 219 GSM9061675    3774
+175.1s 220 GSM9061667    3127
+175.1s 221 GSM9061668    2471
+175.1s 222 GSM9061669     915
+175.1s 223 Name: count, dtype: int64
+175.1s 224 
+175.1s 225 Patients: 4
+175.1s 226 patient_id
+175.1s 227 PT4    13889
+175.1s 228 PT1    10990
+175.1s 229 PT3    10148
+175.1s 230 PT2     3386
+175.1s 231 Name: count, dtype: int64
+175.1s 232 
+175.1s 233 Response distribution:
+175.1s 234 response
+175.1s 235 Non-Responder    24037
+175.1s 236 Responder        14376
+175.1s 237 Name: count, dtype: int64
+175.1s 238 
+175.1s 239 Timepoint distribution:
+175.1s 240 timepoint
+175.1s 241 Baseline      16834
+175.1s 242 Post-Tx       14678
+175.1s 243 Recurrence     6901
+175.1s 244 Name: count, dtype: int64
+178.4s 245 Note: you may need to restart the kernel to use updated packages.
+181.7s 246 Note: you may need to restart the kernel to use updated packages.
+184.8s 247 Note: you may need to restart the kernel to use updated packages.
+188.0s 248 Note: you may need to restart the kernel to use updated packages.
+191.1s 249 Note: you may need to restart the kernel to use updated packages.
+194.3s 250 Note: you may need to restart the kernel to use updated packages.
+197.7s 251 Note: you may need to restart the kernel to use updated packages.
+200.3s 252 2026-02-07 02:04:35.946415: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:467] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+200.3s 253 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+200.3s 254 E0000 00:00:1770429876.123503      25 cuda_dnn.cc:8579] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+200.3s 255 E0000 00:00:1770429876.171645      25 cuda_blas.cc:1407] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+200.3s 256 W0000 00:00:1770429876.612403      25 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+200.3s 257 W0000 00:00:1770429876.612435      25 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+200.3s 258 W0000 00:00:1770429876.612438      25 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+200.3s 259 W0000 00:00:1770429876.612441      25 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+200.5s 260 2026-02-07 02:04:35.946415: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:467] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+200.5s 261 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+200.5s 262 E0000 00:00:1770429876.123503      25 cuda_dnn.cc:8579] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+200.5s 263 E0000 00:00:1770429876.171645      25 cuda_blas.cc:1407] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+200.5s 264 W0000 00:00:1770429876.612403      25 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+200.5s 265 W0000 00:00:1770429876.612435      25 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+200.5s 266 W0000 00:00:1770429876.612438      25 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+200.5s 267 W0000 00:00:1770429876.612441      25 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+200.5s 268 
+200.5s 269 2026-02-07 02:04:35.946415: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:467] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+200.5s 270 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+200.5s 271 E0000 00:00:1770429876.123503      25 cuda_dnn.cc:8579] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+200.5s 272 E0000 00:00:1770429876.171645      25 cuda_blas.cc:1407] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+200.5s 273 W0000 00:00:1770429876.612403      25 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+200.5s 274 W0000 00:00:1770429876.612435      25 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+200.5s 275 W0000 00:00:1770429876.612438      25 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+200.5s 276 W0000 00:00:1770429876.612441      25 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+233.1s 277 Additional libraries installed!
+233.1s 278 CPU times: user 25.6 s, sys: 2.57 s, total: 28.1 s
+233.1s 279 Wall time: 57.8 s
+233.3s 280 TensorFlow GPUs detected: [PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
+233.3s 281 Set memory growth for TensorFlow GPUs.
+233.3s 282 Enabled mixed precision (mixed_float16).
+233.3s 283 XGBoost version: 3.1.0
+233.3s 284 XGBoost GPU support detected (device='cuda' API).
+233.6s 285 Default param_grids defined early (can be overridden later).
+233.6s 286 TF_GPU_AVAILABLE=True, MIXED_PRECISION=True, XGBOOST_GPU_AVAILABLE=True, CUML_AVAILABLE=False
+233.6s 287 If models or param_grids are defined later, call _apply_gpu_patches() to apply GPU settings.
+233.7s 288 Defined XGBoost sklearn-compatible wrapper: XGBClassifierSK (XGBoost version 3.1.0)
+233.7s 289 Using raw_data_dir = /kaggle/working/Data/GSE300475_RAW
+233.8s 290 Patched sklearn.model_selection.LeaveOneGroupOut to auto-apply GPU patches on init
+233.8s 291 Starting Data Loading...
+233.8s 292 Searching for data in: /kaggle/working/Data/GSE300475_RAW
+233.8s 293 Processing GSM9061672_S8_matrix.mtx.gz...
+238.5s 294 Loaded 12832 cells from GSM9061672_S8_
+238.5s 295 Processing GSM9061668_S4_matrix.mtx.gz...
+240.6s 296 Loaded 8723 cells from GSM9061668_S4_
+240.6s 297 Processing GSM9061675_S11_matrix.mtx.gz...
+244.3s 298 Loaded 9330 cells from GSM9061675_S11_
+244.3s 299 Processing GSM9061666_S2_matrix.mtx.gz...
+246.6s 300 Loaded 9069 cells from GSM9061666_S2_
+246.6s 301 Processing GSM9061671_S7_matrix.mtx.gz...
+249.8s 302 Loaded 9330 cells from GSM9061671_S7_
+249.8s 303 Processing GSM9061667_S3_matrix.mtx.gz...
+251.5s 304 Loaded 7358 cells from GSM9061667_S3_
+251.5s 305 Processing GSM9061670_S6_matrix.mtx.gz...
+255.4s 306 Loaded 10398 cells from GSM9061670_S6_
+255.4s 307 Processing GSM9061673_S9_matrix.mtx.gz...
+259.6s 308 Loaded 11480 cells from GSM9061673_S9_
+259.6s 309 Processing GSM9061674_S10_matrix.mtx.gz...
+263.4s 310 Loaded 9704 cells from GSM9061674_S10_
+263.4s 311 Processing GSM9061669_S5_matrix.mtx.gz...
+264.3s 312 Loaded 2912 cells from GSM9061669_S5_
+264.3s 313 Processing GSM9061665_S1_matrix.mtx.gz...
+266.6s 314 Loaded 8931 cells from GSM9061665_S1_
+274.4s 315 Combined AnnData object created: (100067, 36607)
+274.5s 316 Genetic sequence encoding functions defined successfully!
+274.5s 317 CPU times: user 154 µs, sys: 17 µs, total: 171 µs
+274.5s 318 Wall time: 138 µs
+274.6s 319 Starting memory-optimized TCR sequence encoding...
+274.6s 320 Warning: cdr3_TRA column not found, creating empty column
+274.6s 321 Warning: cdr3_TRB column not found, creating empty column
+274.6s 322 TRA sequences: 100067, TRB sequences: 100067
+275.7s 323 TRA k-mer sparse shape: (100067, 1)
+275.7s 324 TRB k-mer sparse shape: (100067, 1)
+275.7s 325 TRA k-mer reduced shape: (100067, 1)
+275.7s 326 TRB k-mer reduced shape: (100067, 1)
+276.4s 327 TRA one-hot shape: (100067, 15, 20) (dtype: float16)
+276.4s 328 TRB one-hot shape: (100067, 15, 20) (dtype: float16)
+276.8s 329 TCR sequence encoding complete and stored in adata.obsm
+276.8s 330 Memory usage reduced by using sparse matrices and dimension reduction
+276.8s 331 CPU times: user 2.24 s, sys: 51.8 ms, total: 2.29 s
+276.8s 332 Wall time: 2.29 s
+277.1s 333 Encoding TCR CDR3 sequences (vectorized k-mer + reduced one-hot)...
+277.6s 334 TRA k-mer sparse shape: (100067, 1)
+277.6s 335 TRB k-mer sparse shape: (100067, 1)
+277.6s 336 TRA k-mer reduced shape: (100067, 1)
+277.6s 337 TRB k-mer reduced shape: (100067, 1)
+277.6s 338 TRA one-hot flat shape: (100067, 400)
+277.6s 339 TRB one-hot flat shape: (100067, 400)
+278.3s 340 TRA physicochemical features shape: (100067, 6)
+278.3s 341 TRB physicochemical features shape: (100067, 6)
+278.3s 342 TCR sequence encoding completed and added to AnnData object!
+278.3s 343 CPU times: user 1.31 s, sys: 32 ms, total: 1.35 s
+278.3s 344 Wall time: 1.34 s
+278.8s 345 Preprocessing gene expression data...
+278.8s 346 Warning: Data is dense. converting to sparse float32...
+278.8s 347 Normalizing...
+282.1s 348 Log transforming...
+283.4s 349 Encoding patterns...
+283.4s 350 Selecting Highly Variable Genes...
+285.0s 351 HVG subset shape: (100067, 1500)
+285.0s 352 Computing PCA (Arpack - Sparse)...
+288.5s 353 Computing TruncatedSVD...
+290.0s 354 Computing UMAP on PCA embeddings...
+445.7s 355 Added X_gene_pca
+445.7s 356 Added X_gene_svd
+445.7s 357 Added X_gene_umap
+445.7s 358 Gene expression encoding completed!
+445.7s 359 CPU times: user 3min 18s, sys: 1.85 s, total: 3min 20s
+445.7s 360 Wall time: 2min 47s
+446.3s 361 Creating combined multi-modal encodings...
+446.3s 362 Reducing k-mer features: (100067, 2)
+446.3s 363 Combined gene-TCR encoding shape: (100067, 26)
+446.3s 364 Combined gene-TCR k-mer encoding shape: (100067, 11)
+446.3s 365 Computing dimensionality reduction on combined data (UMAP only)...
+550.5s 366 CPU times: user 2min 37s, sys: 179 ms, total: 2min 37s
+550.5s 367 Wall time: 1min 44s
+550.6s 368 No patch required for sklearn.check_array signature.
+551.8s 369 Requirement already satisfied: scipy in /usr/local/lib/python3.12/dist-packages (1.15.3)
+551.8s 370 Requirement already satisfied: numpy<2.5,>=1.23.5 in /usr/local/lib/python3.12/dist-packages (from scipy) (2.0.2)
+553.9s 371 Note: you may need to restart the kernel to use updated packages.
+555.1s 372 Collecting leidenalg
+555.1s 373 Downloading leidenalg-0.11.0-cp38-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (10 kB)
+555.1s 374 Requirement already satisfied: igraph<2.0,>=1.0.0 in /usr/local/lib/python3.12/dist-packages (from leidenalg) (1.0.0)
+555.1s 375 Requirement already satisfied: texttable>=1.6.2 in /usr/local/lib/python3.12/dist-packages (from igraph<2.0,>=1.0.0->leidenalg) (1.7.0)
+555.1s 376 Downloading leidenalg-0.11.0-cp38-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (2.7 MB)
+555.2s 377 [?25l   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/2.7 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [91m━━━━━━━━━━━━━━━━━━━━━━━[0m[91m╸[0m[90m━━━━━━━━━━━━━━━━[0m [32m1.6/2.7 MB[0m [31m48.5 MB/s[0m eta [36m0:00:01[0m[2K   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m2.7/2.7 MB[0m [31m46.9 MB/s[0m eta [36m0:00:00[0m
+557.1s 378 [?25hInstalling collected packages: leidenalg
+557.2s 379 Successfully installed leidenalg-0.11.0
+557.4s 380 Note: you may need to restart the kernel to use updated packages.
+557.4s 381 ⏭️ SKIPPING: Unsupervised Learning (Leiden, UMAP, etc.)
+557.4s 382 Set SKIP_UNSUPERVISED_LEARNING=False in the configuration cell to run this section.
+557.4s 383 Running MINIMAL preprocessing for deep learning...
+560.8s 384 patient_id not found directly. Deriving from sample_id...
+560.8s 385 Mapped 0/100067 cells to patient_id
+560.8s 386 Warning: No direct matches. Checking for batch column...
+560.8s 387 Derived response column: {}
+560.8s 388 WARNING: Could not derive patient_id. Downstream patient-level analysis may fail.
+560.8s 389 Available columns: ['sample_id', 'n_genes_by_counts', 'total_counts', 'total_counts_mt', 'pct_counts_mt', 'cdr3_TRA', 'cdr3_TRB', 'tra_length', 'tra_molecular_weight', 'tra_aromaticity', 'tra_instability_index', 'tra_isoelectric_point', 'tra_hydrophobicity', 'trb_length', 'trb_molecular_weight', 'trb_aromaticity', 'trb_instability_index', 'trb_isoelectric_point', 'trb_hydrophobicity', 'patient_id', 'response']
+560.8s 390 Minimal preprocessing complete. supervised_mask: 0 samples
+560.8s 391 CPU times: user 4.48 s, sys: 154 ms, total: 4.63 s
+560.8s 392 Wall time: 10.1 s
+561.3s 393 
+561.3s 394 Running memory cleanup after Leiden clustering (before dendrogram)...
+561.3s 395 Memory before cleanup: 4968 MB
+561.3s 396 Fallback cleanup completed.
+561.3s 397 Memory after cleanup: 4968 MB
+561.6s 398 Response distribution: {'Non-Responder': 63074, 'Responder': 36993}
+561.6s 399 Patient_id coverage: 100067/100067
+561.6s 400 Working with 100067 samples for supervised learning
+561.6s 401 Class distribution: {'Non-Responder': 63074, 'Responder': 36993}
+561.7s 402 Creating comprehensive feature set using ALL available encodings...
+561.7s 403 Applying strategic dimensionality reduction to high-dimensional features...
+561.8s 404 Response distribution: {'Non-Responder': 63074, 'Responder': 36993}
+561.8s 405 Patient_id coverage: 100067/100067
+561.8s 406 Working with 100067 samples for supervised learning
+561.8s 407 Class distribution: {'Non-Responder': 63074, 'Responder': 36993}
+561.8s 408 Reducing k-mer features by variance selection...
+561.8s 409 TRA k-mers reduced from 1 to 1
+561.8s 410 TRB k-mers reduced from 1 to 1
+561.9s 411 
+561.9s 412 Feature set dimensions:
+561.9s 413 • basic: (100067, 29)
+561.9s 414 • gene_enhanced: (100067, 79)
+561.9s 415 • tcr_enhanced: (100067, 31)
+561.9s 416 • comprehensive: (100067, 26)
+561.9s 417 Comprehensive feature engineering completed!
+561.9s 418 CPU times: user 265 ms, sys: 16.1 ms, total: 281 ms
+561.9s 419 Wall time: 280 ms
+563.6s 420 Requirement already satisfied: scipy in /usr/local/lib/python3.12/dist-packages (1.15.3)
+563.6s 421 Requirement already satisfied: numpy<2.5,>=1.23.5 in /usr/local/lib/python3.12/dist-packages (from scipy) (2.0.2)
+565.6s 422 Note: you may need to restart the kernel to use updated packages.
+565.7s 423 Starting patient-level LOPO CV with leakage-safe pipelines (Optimized for Speed/Accuracy)...
+566.8s 424 Supervised patients: 4 -> ['PT1' 'PT2' 'PT3' 'PT4']
+566.8s 425 Per-patient response counts:
+566.8s 426 response
+566.8s 427 Non-Responder    2
+566.8s 428 Responder        2
+566.8s 429 Name: count, dtype: int64
+566.8s 430 Cleaning up temporary variables and large matrices before ML.
+566.9s 431 Failed to patch models_eval['XGBoost']: 'XGBClassifierSK' object has no attribute 'predictor'
+566.9s 432 Patched models_eval['Random Forest'] to use n_jobs=-1.
+566.9s 433 Patched param_grids['XGBoost'] with GPU options (method=device).
+566.9s 434 Failed to patch models_eval['XGBoost']: 'XGBClassifierSK' object has no attribute 'predictor'
+566.9s 435 Patched models_eval['Random Forest'] to use n_jobs=-1.
+566.9s 436 Patched param_grids['XGBoost'] with GPU options (method=device).
+566.9s 437 
+566.9s 438 === Feature set: basic (shape=(100067, 29)) ===
+566.9s 439 LOPO fold 1/4 -- held patient(s): ['PT1']
+743.1s 440 FIXED: param_grids defined with reduced hyperparameter space: ['Logistic Regression', 'Decision Tree', 'Random Forest', 'XGBoost']
+743.1s 441 Logistic Regression: 3 combinations
+743.1s 442 Decision Tree: 8 combinations
+743.1s 443 Random Forest: 4 combinations
+743.1s 444 XGBoost: 8 combinations
+743.3s 445 Mixed precision enabled (float16 compute, float32 variables)
+743.3s 446 TensorFlow version: 2.19.0
+743.3s 447 Found 1 GPU(s): [PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
+743.3s 448 TensorFlow will use: GPU
+743.3s 449 DL hyperparameter combinations: 32
+743.5s 450 Failed to patch models_eval['XGBoost']: 'XGBClassifierSK' object has no attribute 'predictor'
+743.5s 451 Patched models_eval['Random Forest'] to use n_jobs=-1.
+743.5s 452 Patched param_grids['XGBoost'] with GPU options (method=device).
+743.5s 453 
+743.5s 454 === DL evaluation using feature set: sequence_structure ===
+743.5s 455 LOPO fold 1/4 -- held patient: ['PT1']
+745.9s 456 I0000 00:00:1770430422.261879      25 gpu_device.cc:2019] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 15511 MB memory:  -> device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:00:04.0, compute capability: 6.0
+746.1s 457 I0000 00:00:1770430422.261879      25 gpu_device.cc:2019] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 15511 MB memory:  -> device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:00:04.0, compute capability: 6.0
+746.1s 458 
+746.1s 459 I0000 00:00:1770430422.261879      25 gpu_device.cc:2019] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 15511 MB memory:  -> device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:00:04.0, compute capability: 6.0
+753.5s 460 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+753.5s 461 I0000 00:00:1770430429.827970     293 service.cc:152] XLA service 0x7e90b40038c0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+753.5s 462 I0000 00:00:1770430429.827999     293 service.cc:160]   StreamExecutor device (0): Tesla P100-PCIE-16GB, Compute Capability 6.0
+753.7s 463 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+753.7s 464 I0000 00:00:1770430429.827970     293 service.cc:152] XLA service 0x7e90b40038c0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+753.7s 465 I0000 00:00:1770430429.827999     293 service.cc:160]   StreamExecutor device (0): Tesla P100-PCIE-16GB, Compute Capability 6.0
+753.7s 466 
+753.7s 467 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+753.7s 468 I0000 00:00:1770430429.827970     293 service.cc:152] XLA service 0x7e90b40038c0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+753.7s 469 I0000 00:00:1770430429.827999     293 service.cc:160]   StreamExecutor device (0): Tesla P100-PCIE-16GB, Compute Capability 6.0
+753.9s 470 I0000 00:00:1770430430.296472     293 cuda_dnn.cc:529] Loaded cuDNN version 91002
+754.1s 471 I0000 00:00:1770430430.296472     293 cuda_dnn.cc:529] Loaded cuDNN version 91002
+754.1s 472 
+754.1s 473 I0000 00:00:1770430430.296472     293 cuda_dnn.cc:529] Loaded cuDNN version 91002
+756.4s 474 I0000 00:00:1770430432.750273     293 device_compiler.h:188] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+756.6s 475 I0000 00:00:1770430432.750273     293 device_compiler.h:188] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+756.6s 476 
+756.6s 477 I0000 00:00:1770430432.750273     293 device_compiler.h:188] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+14839.4s 478 Selected best inner config: ('MLP', 64, 0.2, 0.001, 16, 30) with mean val auc=0.0000
+15106.9s 479 [1m  1/793[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m4:45[0m 360ms/step[1m 22/793[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m1s[0m 2ms/step    [1m 47/793[0m [32m━[0m[37m━━━━━━━━━━━━━━━━━━━[0m [1m1s[0m 2ms/step[1m 73/793[0m [32m━[0m[37m━━━━━━━━━━━━━━━━━━━[0m [1m1s[0m 2ms/step[1m 98/793[0m [32m━━[0m[37m━━━━━━━━━━━━━━━━━━[0m [1m1s[0m 2ms/step[1m123/793[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m1s[0m 2ms/step[1m148/793[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m1s[0m 2ms/step[1m174/793[0m [32m━━━━[0m[37m━━━━━━━━━━━━━━━━[0m [1m1s[0m 2ms/step[1m199/793[0m [32m━━━━━[0m[37m━━━━━━━━━━━━━━━[0m [1m1s[0m 2ms/step[1m224/793[0m [32m━━━━━[0m[37m━━━━━━━━━━━━━━━[0m [1m1s[0m 2ms/step[1m249/793[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m1s[0m 2ms/step[1m274/793[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m1s[0m 2ms/step[1m300/793[0m [32m━━━━━━━[0m[37m━━━━━━━━━━━━━[0m [1m1s[0m 2ms/step[1m326/793[0m [32m━━━━━━━━[0m[37m━━━━━━━━━━━━[0m [1m0s[0m 2ms/step[1m350/793[0m [32m━━━━━━━━[0m[37m━━━━━━━━━━━━[0m [1m0s[0m 2ms/step[1m372/793[0m [32m━━━━━━━━━[0m[37m━━━━━━━━━━━[0m [1m0s[0m 2ms/step[1m393/793[0m [32m━━━━━━━━━[0m[37m━━━━━━━━━━━[0m [1m0s[0m 2ms/step[1m415/793[0m [32m━━━━━━━━━━[0m[37m━━━━━━━━━━[0m [1m0s[0m 2ms/step[1m437/793[0m [32m━━━━━━━━━━━[0m[37m━━━━━━━━━[0m [1m0s[0m 2ms/step[1m459/793[0m [32m━━━━━━━━━━━[0m[37m━━━━━━━━━[0m [1m0s[0m 2ms/step[1m481/793[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m0s[0m 2ms/step[1m503/793[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m0s[0m 2ms/step[1m525/793[0m [32m━━━━━━━━━━━━━[0m[37m━━━━━━━[0m [1m0s[0m 2ms/step[1m548/793[0m [32m━━━━━━━━━━━━━[0m[37m━━━━━━━[0m [1m0s[0m 2ms/step[1m572/793[0m [32m━━━━━━━━━━━━━━[0m[37m━━━━━━[0m [1m0s[0m 2ms/step[1m597/793[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m0s[0m 2ms/step[1m621/793[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m0s[0m 2ms/step[1m642/793[0m [32m━━━━━━━━━━━━━━━━[0m[37m━━━━[0m [1m0s[0m 2ms/step[1m663/793[0m [32m━━━━━━━━━━━━━━━━[0m[37m━━━━[0m [1m0s[0m 2ms/step[1m685/793[0m [32m━━━━━━━━━━━━━━━━━[0m[37m━━━[0m [1m0s[0m 2ms/step[1m709/793[0m [32m━━━━━━━━━━━━━━━━━[0m[37m━━━[0m [1m0s[0m 2ms/step[1m733/793[0m [32m━━━━━━━━━━━━━━━━━━[0m[37m━━[0m [1m0s[0m 2ms/step[1m757/793[0m [32m━━━━━━━━━━━━━━━━━━━[0m[37m━[0m [1m0s[0m 2ms/step[1m779/793[0m [32m━━━━━━━━━━━━━━━━━━━[0m[37m━[0m [1m0s[0m 2ms/step[1m793/793[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 3ms/step[1m793/793[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m2s[0m 3ms/step
+15113.6s 480 LOPO fold 2/4 -- held patient: ['PT2']
+31485.9s 481 Selected best inner config: ('MLP', 64, 0.2, 0.001, 16, 30) with mean val auc=0.0000
+31681.4s 482 [1m  1/364[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m2:04[0m 343ms/step[1m 23/364[0m [32m━[0m[37m━━━━━━━━━━━━━━━━━━━[0m [1m0s[0m 2ms/step    [1m 47/364[0m [32m━━[0m[37m━━━━━━━━━━━━━━━━━━[0m [1m0s[0m 2ms/step[1m 72/364[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m0s[0m 2ms/step[1m 97/364[0m [32m━━━━━[0m[37m━━━━━━━━━━━━━━━[0m [1m0s[0m 2ms/step[1m122/364[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m0s[0m 2ms/step[1m146/364[0m [32m━━━━━━━━[0m[37m━━━━━━━━━━━━[0m [1m0s[0m 2ms/step[1m171/364[0m [32m━━━━━━━━━[0m[37m━━━━━━━━━━━[0m [1m0s[0m 2ms/step[1m196/364[0m [32m━━━━━━━━━━[0m[37m━━━━━━━━━━[0m [1m0s[0m 2ms/step[1m221/364[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m0s[0m 2ms/step[1m246/364[0m [32m━━━━━━━━━━━━━[0m[37m━━━━━━━[0m [1m0s[0m 2ms/step[1m271/364[0m [32m━━━━━━━━━━━━━━[0m[37m━━━━━━[0m [1m0s[0m 2ms/step[1m296/364[0m [32m━━━━━━━━━━━━━━━━[0m[37m━━━━[0m [1m0s[0m 2ms/step[1m321/364[0m [32m━━━━━━━━━━━━━━━━━[0m[37m━━━[0m [1m0s[0m 2ms/step[1m341/364[0m [32m━━━━━━━━━━━━━━━━━━[0m[37m━━[0m [1m0s[0m 2ms/step[1m363/364[0m [32m━━━━━━━━━━━━━━━━━━━[0m[37m━[0m [1m0s[0m 2ms/step[1m364/364[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 3ms/step[1m364/364[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m2s[0m 3ms/step
+31691.6s 483 LOPO fold 3/4 -- held patient: ['PT3']
