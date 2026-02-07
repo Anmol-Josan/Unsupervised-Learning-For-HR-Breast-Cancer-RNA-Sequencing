@@ -28,4 +28,5 @@ kaggle.json
 # Ignore the development directory
 Dev/
 
-*.7z
+# Ignore the .env file containing environment variables
+.env
