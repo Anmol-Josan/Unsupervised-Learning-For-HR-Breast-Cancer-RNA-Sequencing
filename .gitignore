@@ -27,3 +27,5 @@ kaggle.json
 
 # Ignore the development directory
 Dev/
+
+*.7z
